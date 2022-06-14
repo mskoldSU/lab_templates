@@ -15,7 +15,7 @@ Den typiska arbetsgången är att personal på museets labb först väljer en st
 Eftersom detta görs manuellt (och fälten saknar låsning) blir det inte likadant varje gång. Lokalen *Gotland Sydost* skrivs ibland som *Gotland SO*, eller *S.O. Gotland*, eller ... Detta gör det svårt att sedan läsa in ifyllda mallar automatiskt.
 
 
-> **_Projekt 1:_ Automatisk ifyllning av mall.**  Detta projekt har som mål att konstruera ett verktyg (en Shiny-app?) som delvis automatiserar förberedandet av rapportmallarna. Syftet är både att spara tid för labbets personal och att säkra att de blir maskinläsbara.
+> [**_Projekt 1:_ Automatisk ifyllning av mall.**](https://github.com/mskoldSU/lab_templates/blob/master/projekt1.md)  Detta projekt har som mål att konstruera ett verktyg (en Shiny-app?) som delvis automatiserar förberedandet av rapportmallarna. Syftet är både att spara tid för labbets personal och att säkra att de blir maskinläsbara.
 
 Mallen, uppdaterad med information om proverna, skickas nu till det labb som utför de kemiska analyserna. De fyller i resultaten och skickar mallen tillbaka till museet. På museet kan den ifyllda mallen sedan ligga oläst i flera månader. När det sedan blir dags att skriva rapport eller rapportera data vidare till datavärd upptäcker man ofta att något saknas eller har blivit fel inmatat. Detta leder ofta till en tidsödande korrespondens med labbet.
 
