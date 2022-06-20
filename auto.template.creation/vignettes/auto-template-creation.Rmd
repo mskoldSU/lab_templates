@@ -1,0 +1,19 @@
+---
+title: "auto-template-creation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{auto-template-creation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(auto.template.creation)
+```

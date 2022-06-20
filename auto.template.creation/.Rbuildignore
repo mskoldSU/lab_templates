@@ -4,6 +4,7 @@
 dev_history.R
 ^dev$
 $run_dev.*
-^LICENSE\.md$
+^doc$
+^Meta$
+^codecov\.yml$
 ^README\.Rmd$
-^CODE_OF_CONDUCT\.md$

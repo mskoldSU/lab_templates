@@ -21,7 +21,7 @@
 golem::fill_desc(
   pkg_name = "auto.template.creation", # The Name of the package containing the App
   pkg_title = "Auto Template Creation", # The Title of the package containing the App
-  pkg_description = "A Shiny application that generates templates for analytical laboratories.", # The Description of the package containing the App
+  pkg_description = "A Shiny application that creates templates for analytical laboratories.", # The Description of the package containing the App
   author_first_name = "Elias", # Your First Name
   author_last_name = "Lundell", # Your Last Name
   author_email = "elilun03@gmail.com", # Your Email
