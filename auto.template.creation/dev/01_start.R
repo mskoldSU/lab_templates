@@ -20,12 +20,12 @@
 ##
 golem::fill_desc(
   pkg_name = "auto.template.creation", # The Name of the package containing the App
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = NULL # The URL of the GitHub Repo (optional)
+  pkg_title = "Auto Template Creation", # The Title of the package containing the App
+  pkg_description = "A Shiny application that generates templates for analytical laboratories", # The Description of the package containing the App
+  author_first_name = "Elias", # Your First Name
+  author_last_name = "Lundell", # Your Last Name
+  author_email = "elilun03@gmail.com", # Your Email
+  repo_url = "https://github.com/mskoldSU/lab_templates.git" # The URL of the GitHub Repo (optional)
 )
 
 ## Set {golem} options ----
