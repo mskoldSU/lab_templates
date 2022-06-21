@@ -10,7 +10,25 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      h1("auto.template.creation")
+      titlePanel("Automatic Template Creation"),
+      tabsetPanel(type = "tabs",
+                  tabPanel("Dioxiner",
+                           br(),
+                           mod_template_category_conf_ui("template_category_conf_diox")
+                           ),
+                  tabPanel("Metaller",
+                           br(),
+                           mod_template_category_conf_ui("template_category_conf_meta")
+                           ),
+                  tabPanel("Hg + SIA",
+                           br(),
+                           mod_template_category_conf_ui("template_category_conf_hgsi")
+                           ),
+                  tabPanel("PFAS",
+                           br(),
+                           mod_template_category_conf_ui("template_category_conf_pfas")
+                           ),
+                  ),
     )
   )
 }

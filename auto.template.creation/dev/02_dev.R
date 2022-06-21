@@ -24,10 +24,14 @@ usethis::use_package("DT")
 ## Create a module infrastructure in R/
 # golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "rows_conf", with_test = TRUE)
+golem::add_module(name = "cols_conf", with_test = TRUE)
+golem::add_module(name = "template_category_conf", with_test = TRUE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 # golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("generate_template", with_test = TRUE)
 # golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
