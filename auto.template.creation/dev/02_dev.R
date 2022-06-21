@@ -19,6 +19,7 @@ attachment::att_amend_desc()
 
 ## Dependencies
 usethis::use_package("DT")
+usethis::use_package("magrittr")
 
 ## Add modules ----
 ## Create a module infrastructure in R/
