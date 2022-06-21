@@ -17,6 +17,9 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 attachment::att_amend_desc()
 
+## Dependencies
+usethis::use_package("DT")
+
 ## Add modules ----
 ## Create a module infrastructure in R/
 # golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
@@ -53,24 +56,28 @@ devtools::build_vignettes()
 usethis::use_coverage()
 
 # Create a summary readme for the testthat subdirectory
-covrpage::covrpage()
+browser_option_set <- getOption("browser") > 0
+covrpage::covrpage(preview = browser_option_set)
+if (!browser_option_set) {
+  print("No browser option set. Not previewing covrpage in browser.")
+}
 
 ## CI ----
 ## Use this part of the script if you need to set up a CI
 ## service for your application
 ##
 ## (You'll need GitHub there)
-usethis::use_github()
+# usethis::use_github()
 
 # GitHub Actions
-usethis::use_github_action()
+# usethis::use_github_action()
 # Chose one of the three
 # See https://usethis.r-lib.org/reference/use_github_action.html
 # usethis::use_github_action_check_release()
 # usethis::use_github_action_check_standard()
 # usethis::use_github_action_check_full()
 # Add action for PR
-usethis::use_github_action_pr_commands()
+# usethis::use_github_action_pr_commands()
 
 # Travis CI
 # usethis::use_travis()
@@ -92,4 +99,8 @@ usethis::use_github_action_pr_commands()
 
 # You're now set! ----
 # go to dev/03_deploy.R
-rstudioapi::navigateToFile("dev/03_deploy.R")
+if (rstudioapi::isAvailable()) {
+  rstudioapi::navigateToFile("dev/03_deploy.R")
+} else {
+  print("Goto dev/03_deploy.R to deploy")
+}
