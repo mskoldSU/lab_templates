@@ -1,6 +1,6 @@
 Tests and Coverage
 ================
-20 June, 2022 14:14:28
+21 June, 2022 09:29:15
 
 -   [Coverage](#coverage)
 -   [Unit Tests](#unit-tests)
@@ -29,7 +29,7 @@ Unit Test summary is created using the
 
 | file                              |   n |  time | error | failed | skipped | warning |
 |:----------------------------------|----:|------:|------:|-------:|--------:|--------:|
-| [test-app.R](testthat/test-app.R) |   1 | 0.011 |     0 |      0 |       0 |       0 |
+| [test-app.R](testthat/test-app.R) |   1 | 0.022 |     0 |      0 |       0 |       0 |
 
 <details closed>
 <summary>
@@ -38,7 +38,7 @@ Show Detailed Test Results
 
 | file                                 | context | test                 | status |   n |  time |
 |:-------------------------------------|:--------|:---------------------|:-------|----:|------:|
-| [test-app.R](testthat/test-app.R#L2) | app     | multiplication works | PASS   |   1 | 0.011 |
+| [test-app.R](testthat/test-app.R#L2) | app     | multiplication works | PASS   |   1 | 0.022 |
 
 </details>
 <details>
