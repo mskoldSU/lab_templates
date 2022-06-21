@@ -10,26 +10,37 @@
 mod_template_category_conf_ui <- function(id){
   ns <- NS(id)
   tagList(
-    tabsetPanel(id = ns("row_col_tabs"), type = "pills",
-      tabPanel("Rows", id = ns("rows"),
-               mod_rows_conf_ui(ns("rows_conf_1"))
-               ),
-      tabPanel("Cols", id = ns("cols"),
-               mod_cols_conf_ui(ns("cols_conf_1")),
-               )
+    mod_cols_conf_ui(ns("cols_conf_1")),
+    uiOutput(outputId = ns("tabs"))
     )
-  )
 }
     
 #' template_category_conf Server Functions
 #'
 #' @noRd 
-mod_template_category_conf_server <- function(id){
+mod_template_category_conf_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    mod_rows_conf_server(ns("rows_conf_1"))
-    mod_cols_conf_server(ns("cols_conf_1"))
- 
+
+    observe({
+      if (!is.null(r$cols_df)) {
+        output$tabs <- renderUI({
+          tabs <- list()
+          for (sheet in unique(r$cols_df$sheet)) {
+            tabs <- append(tabs, list(
+                           tabPanel(sheet, id = ns(sheet),
+                                    p(paste0("hello :)", sheet)))
+                           ))
+          }
+
+          do.call("tabsetPanel", append(
+                                   list(id = ns("row_tabs"), type = "tabs"),
+                                   tabs))
+        })
+      }
+    })
+
+    mod_cols_conf_server("cols_conf_1", r = r)
   })
 }
     

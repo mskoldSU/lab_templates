@@ -11,10 +11,10 @@ mod_rows_conf_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
-    column(width = 6,
-           ),
-    column(width = 6,
-           )),
+      column(width = 6,
+             ),
+      column(width = 6,
+             )),
     h4("This is a module"),
     h5(id)
   )
@@ -23,7 +23,7 @@ mod_rows_conf_ui <- function(id){
 #' rows_conf Server Functions
 #'
 #' @noRd 
-mod_rows_conf_server <- function(id){
+mod_rows_conf_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
  

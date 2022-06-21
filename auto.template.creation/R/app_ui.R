@@ -11,24 +11,7 @@ app_ui <- function(request) {
     # Your application UI logic
     fluidPage(
       titlePanel("Automatic Template Creation"),
-      tabsetPanel(type = "tabs",
-                  tabPanel("Dioxiner",
-                           br(),
-                           mod_template_category_conf_ui("template_category_conf_diox")
-                           ),
-                  tabPanel("Metaller",
-                           br(),
-                           mod_template_category_conf_ui("template_category_conf_meta")
-                           ),
-                  tabPanel("Hg + SIA",
-                           br(),
-                           mod_template_category_conf_ui("template_category_conf_hgsi")
-                           ),
-                  tabPanel("PFAS",
-                           br(),
-                           mod_template_category_conf_ui("template_category_conf_pfas")
-                           ),
-                  ),
+      mod_template_category_conf_ui("template_category_conf")
     )
   )
 }
