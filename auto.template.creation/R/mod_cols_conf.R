@@ -10,7 +10,7 @@
 mod_cols_conf_ui <- function(id){
   ns <- NS(id)
   tagList(
-    fileInput(inputId = ns("cols_data_file"), label = "Choose Cols Definition", multiple = FALSE,
+    fileInput(inputId = ns("cols_data_file"), label = "Upload Cols Definition", multiple = FALSE,
               accept = c("text/csv", "text/comma-separated-values", ".csv")),
     wellPanel(
       h4("Preview Columns"),

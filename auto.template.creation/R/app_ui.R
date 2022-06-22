@@ -11,15 +11,15 @@ app_ui <- function(request) {
     # Your application UI logic
     fluidPage(
       title = "Automatic Template Creation",
-      titlePanel("Automatic Template Creation"),
+      HTML("<h1>aut<span style='color: #A52A2A;'>O</span>matic templa<span style='color: #A52A2A;'>T</span>e <span style='color: #A52A2A;'>C</span>reation</h1>"),
       tabsetPanel(id = "tabs", type = "tabs",
                   tabPanel("Kolumner", id = "cols-tab",
                            br(),
                            mod_cols_conf_ui("cols_conf_1"),
                            ),
                   tabPanel("Provberedning", id = "provprep-tab",
-                           mod_order_spec_conf_ui("order_spec_conf_1"),
                            br(),
+                           mod_order_spec_conf_ui("order_spec_conf_1"),
                            ),
                   tabPanel("Export", id = "export-tab",
                            br(),

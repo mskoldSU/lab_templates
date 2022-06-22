@@ -27,6 +27,7 @@ usethis::use_package("magrittr")
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 golem::add_module(name = "cols_conf", with_test = FALSE)
 golem::add_module(name = "order_spec_conf", with_test = FALSE)
+golem::add_module(name = "set_accnr", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -38,7 +39,8 @@ golem::add_fct("generate_template", with_test = TRUE)
 ## Creates .js and .css files at inst/app/www
 # golem::add_js_file("script")
 # golem::add_js_handler("handlers")
-# golem::add_css_file("custom")
+golem::add_js_handler("custom_js")
+golem::add_css_file("custom_style")
 # golem::add_sass_file("custom")
 
 ## Add internal datasets ----
