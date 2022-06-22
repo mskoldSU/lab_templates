@@ -13,6 +13,7 @@ mod_order_spec_conf_ui <- function(id) {
     fileInput(inputId = ns("order_spec_file"), label = "Choose Order Specification", multiple = FALSE,
               accept = c("text/csv", "text/comma-separated-values", ".csv")),
     textOutput(outputId = ns("cols_check_text")),
+    actionButton(inputId = ns("temp"), label = "GOGOG"),
     wellPanel(
       h4("Select [...] to Set AccNR for"),
       DT::dataTableOutput(ns("order_spec_table")),
@@ -29,7 +30,7 @@ mod_order_spec_conf_server <- function(id, r) {
 
     observe({
       req(r$order_df)
-      output$order_spec_table <- DT::renderDataTable(rownames = FALSE, escape = FALSE, server = FALSE, selection = "none", class = "nowrap",
+      output$order_spec_table <- DT::renderDT(rownames = FALSE, escape = FALSE, server = FALSE, selection = "none", class = "nowrap",
                                                      options = list(scrollX = TRUE, select = list(style = "multi", items = "cell", selector = "td div")),
                                                      extension = "Select", {
                                                        modified_order_df <- r$order_df
@@ -42,6 +43,10 @@ mod_order_spec_conf_server <- function(id, r) {
                                                        }, "<div style='user-select: none;'>", "</div>")
                                                        modified_order_df
                                                      })
+    })
+
+    observeEvent(input$temp, {
+      print(input$order_spec_table_cells_selected)
     })
 
     observeEvent(input$order_spec_file, {

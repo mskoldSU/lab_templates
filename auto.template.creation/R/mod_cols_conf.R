@@ -30,7 +30,7 @@ mod_cols_conf_server <- function(id, r){
     r$cols_df <- NULL
 
     update_main_df <- function() {
-      output$input_table <- DT::renderDataTable(options = list(scrollX = TRUE, pageLength = 25), {
+      output$input_table <- DT::renderDT(options = list(scrollX = TRUE, pageLength = 25), {
         r$cols_df[r$cols_df$sheet %in% input$sheet_selector_select,]
       })
     }
