@@ -11,7 +11,15 @@ app_ui <- function(request) {
     # Your application UI logic
     fluidPage(
       titlePanel("Automatic Template Creation"),
-      mod_template_category_conf_ui("template_category_conf")
+      tabsetPanel(id = "tabs", type = "tabs",
+                  tabPanel("Kolumner", id = "cols-tab",
+                           mod_cols_conf_ui("cols_conf_1"),
+                           ),
+                  tabPanel("Provberedning", id = "provprep-tab",
+                           ),
+                  tabPanel("Export", id = "export-tab",
+                           )
+                  )
     )
   )
 }
@@ -31,12 +39,12 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
-    bundle_resources(
-      path = app_sys("app/www"),
-      app_title = "auto.template.creation"
-    )
-    # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
-  )
+         favicon(),
+         bundle_resources(
+           path = app_sys("app/www"),
+           app_title = "auto.template.creation"
+         )
+                                        # Add here other external resources
+                                        # for example, you can add shinyalert::useShinyalert()
+       )
 }

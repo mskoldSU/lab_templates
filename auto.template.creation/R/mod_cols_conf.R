@@ -30,25 +30,27 @@ mod_cols_conf_server <- function(id, r){
     r$cols_df <- NULL
 
     update_main_df <- function() {
-      output$input_table <- DT::renderDataTable(options = list(scrollX = TRUE), {
+      output$input_table <- DT::renderDataTable(options = list(scrollX = TRUE, pageLength = 25), {
         r$cols_df[r$cols_df$sheet %in% input$sheet_selector_select,]
       })
     }
 
     observeEvent(input$cols_data_file, {
-      r$cols_df <<- read.csv(file = input$cols_data_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE)
+      cols_df <- read.csv(file = input$cols_data_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE)
 
       required_headers <- c("nrm_code", "sheet")
 
       for (head in required_headers) {
-        if (!(head %in% colnames(r$cols_df))) {
-          showNotification(paste0("Table is missing '", head, "' header"), type="error")
+        if (!(head %in% colnames(cols_df))) {
+          showNotification(paste0("Table is missing '", head, "' header. Expecting headers: '", paste(required_headers, collapse = "', '"), "'."), type="error")
           return()
         }
       }
 
+      r$cols_df <<- cols_df
+
       output$sheet_selector_ui <- renderUI({
-        selectInput(inputId = ns("sheet_selector_select"), label = "Select Sheet to Preview", choices = unique(r$cols_df$sheet), selected = NULL, multiple = TRUE)
+        selectInput(inputId = ns("sheet_selector_select"), label = "Select Sheet to Preview", choices = unique(r$cols_df$sheet), selected = unique(r$cols_df$sheet), multiple = TRUE)
       })
     })
 

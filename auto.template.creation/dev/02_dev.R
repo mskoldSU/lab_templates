@@ -27,7 +27,6 @@ usethis::use_package("magrittr")
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 golem::add_module(name = "rows_conf", with_test = FALSE)
 golem::add_module(name = "cols_conf", with_test = FALSE)
-golem::add_module(name = "template_category_conf", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

@@ -8,5 +8,5 @@ app_server <- function(input, output, session) {
   # Your application server logic
   r <- reactiveValues()
 
-  mod_template_category_conf_server("template_category_conf", r = r)
+  mod_cols_conf_server("cols_conf_1", r = r)
 }
