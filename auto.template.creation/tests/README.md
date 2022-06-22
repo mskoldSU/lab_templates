@@ -1,6 +1,6 @@
 Tests and Coverage
 ================
-22 June, 2022 09:30:12
+22 June, 2022 11:22:55
 
 -   [Coverage](#coverage)
 -   [Unit Tests](#unit-tests)
@@ -13,16 +13,15 @@ This output is created by
 Coverage summary is created using the
 [covr](https://github.com/r-lib/covr) package.
 
-| Object                                                              | Coverage (%) |
-|:--------------------------------------------------------------------|:------------:|
-| auto.template.creation                                              |      0       |
-| [R/app_config.R](../R/app_config.R)                                 |      0       |
-| [R/app_server.R](../R/app_server.R)                                 |      0       |
-| [R/app_ui.R](../R/app_ui.R)                                         |      0       |
-| [R/mod_cols_conf.R](../R/mod_cols_conf.R)                           |      0       |
-| [R/mod_rows_conf.R](../R/mod_rows_conf.R)                           |      0       |
-| [R/mod_template_category_conf.R](../R/mod_template_category_conf.R) |      0       |
-| [R/run_app.R](../R/run_app.R)                                       |      0       |
+| Object                                                | Coverage (%) |
+|:------------------------------------------------------|:------------:|
+| auto.template.creation                                |      0       |
+| [R/app_config.R](../R/app_config.R)                   |      0       |
+| [R/app_server.R](../R/app_server.R)                   |      0       |
+| [R/app_ui.R](../R/app_ui.R)                           |      0       |
+| [R/mod_cols_conf.R](../R/mod_cols_conf.R)             |      0       |
+| [R/mod_order_spec_conf.R](../R/mod_order_spec_conf.R) |      0       |
+| [R/run_app.R](../R/run_app.R)                         |      0       |
 
 <br>
 
@@ -33,7 +32,7 @@ Unit Test summary is created using the
 
 | file                                                                  |   n |  time | error | failed | skipped | warning |
 |:----------------------------------------------------------------------|----:|------:|------:|-------:|--------:|--------:|
-| [test-app.R](testthat/test-app.R)                                     |   1 | 0.022 |     0 |      0 |       0 |       0 |
+| [test-app.R](testthat/test-app.R)                                     |   1 | 0.021 |     0 |      0 |       0 |       0 |
 | [test-fct_generate_template.R](testthat/test-fct_generate_template.R) |   1 | 0.002 |     0 |      0 |       0 |       0 |
 
 <details closed>
@@ -43,7 +42,7 @@ Show Detailed Test Results
 
 | file                                                                     | context               | test                 | status |   n |  time |
 |:-------------------------------------------------------------------------|:----------------------|:---------------------|:-------|----:|------:|
-| [test-app.R](testthat/test-app.R#L2)                                     | app                   | multiplication works | PASS   |   1 | 0.022 |
+| [test-app.R](testthat/test-app.R#L2)                                     | app                   | multiplication works | PASS   |   1 | 0.021 |
 | [test-fct_generate_template.R](testthat/test-fct_generate_template.R#L2) | fct_generate_template | multiplication works | PASS   |   1 | 0.002 |
 
 </details>
