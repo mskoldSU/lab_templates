@@ -29,17 +29,19 @@ mod_order_spec_conf_server <- function(id, r) {
 
     observe({
       req(r$order_df)
-      output$order_spec_table <- DT::renderDataTable(escape = FALSE, server = FALSE, selection = list(target = "cell"), class = "nowrap cell-border", options = list(scrollX = TRUE, paging = FALSE), {
-        modified_order_df <- r$order_df
-        sheet_cols <- seq(3, ncol(modified_order_df))
-        modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
-          function(i, a) {
-            modified_order_df[modified_order_df[, i] != "", i] <- paste0(a, modified_order_df[modified_order_df[, i] != "", i])
-            modified_order_df[,i]
-          }
-        }, "<input type='checkbox'></input><br/>")
-        modified_order_df
-      })
+      output$order_spec_table <- DT::renderDataTable(rownames = FALSE, escape = FALSE, server = FALSE, selection = "none", class = "nowrap",
+                                                     options = list(scrollX = TRUE, select = list(style = "multi", items = "cell", selector = "td div")),
+                                                     extension = "Select", {
+                                                       modified_order_df <- r$order_df
+                                                       sheet_cols <- seq(3, ncol(modified_order_df))
+                                                       modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
+                                                         function(i, a, b) {
+                                                           modified_order_df[modified_order_df[, i] != "", i] <- paste0(a, modified_order_df[modified_order_df[, i] != "", i], b)
+                                                           modified_order_df[,i]
+                                                         }
+                                                       }, "<div style='user-select: none;'>", "</div>")
+                                                       modified_order_df
+                                                     })
     })
 
     observeEvent(input$order_spec_file, {
