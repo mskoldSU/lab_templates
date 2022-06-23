@@ -60,7 +60,7 @@ MTPRCI,Hg,"Torrvikt, %",CH12/224,Procent_av_vv,% av vv (våtvikt)
 TPRCI,Hg,"Torrvikt, %",CH12/224,Procent_av_vv,% av vv (våtvikt)
 HGFSI,Hg,Kvicksilver,CH01/86,ng.g-1.vv-1,ng/g vv (våtvikt)
 TPRCIVL,PAH,"Torrvikt, %",CH12/224,Procent_av_vv,% av vv (våtvikt)
-"NAP",PAH,Naftalen,CH06/347,ng.g-1.tv-1,ng/g tv (torrvikt)
+NAP,PAH,Naftalen,CH06/347,ng.g-1.tv-1,ng/g tv (torrvikt)
 ACNE,PAH,Acenaften,CH06/169,ng.g-1.tv-1,ng/g tv (torrvikt)
 FLE,PAH,Fluoren,CH06/294,ng.g-1.tv-1,ng/g tv (torrvikt)
 PA,PAH,Fenantren,CH06/278,ng.g-1.tv-1,ng/g tv (torrvikt)
@@ -130,3 +130,9 @@ SNTSI,Metals,Tenn,CH01/145,ug.g-1.tv-1,µg/g tv (torrvikt)
 ZNTSI,Metals,Zink,CH01/165,ug.g-1.tv-1,µg/g tv (torrvikt)
 SBTSI,Metals,Antimon,CH01/12,ug.g-1.tv-1,µg/g tv (torrvikt)
 BITSI,Metals,Vismut,CH01/160,ug.g-1.tv-1,µg/g tv (torrvikt)
+,CIC,,,,
+,PBDE,,,,
+,HBCD,,,,
+,SI_för_dioxin,,,,
+,PFAS_fiskar,,,,
+,PCB,,,,

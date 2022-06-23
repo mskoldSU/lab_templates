@@ -23,6 +23,7 @@ app_ui <- function(request) {
                            ),
                   tabPanel("Export", id = "export-tab",
                            br(),
+                           mod_export_ui("export_1")
                            )
                   )
     )
