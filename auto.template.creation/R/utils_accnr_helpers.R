@@ -7,13 +7,13 @@
 #' @noRd
 #'
 #' @importFrom stringr str_detect
-get_end_accnr <- function(start_accnr, nr_tests, nr_per_test) {
+accnr_add <- function(start_accnr, amount) {
   ## AccNR on the form 'A2022/00245'
   parts <- strsplit(start_accnr, "/")[[1]]
   nr_str <- left_pad(parts[2], 5)
   nr <- as.numeric(nr_str)
 
-  new_nr <- nr + nr_tests * nr_per_test - 1
+  new_nr <- nr + amount
 
   if (nchar(paste(new_nr)) > 5) {
     warning(paste0("AccNR Overflow. Trying to create an accnr of value: ", new_nr, "."))
@@ -24,7 +24,7 @@ get_end_accnr <- function(start_accnr, nr_tests, nr_per_test) {
 }
 
 valid_accnr <- function(accnr) {
-  str_detect(accnr, "^[A-Za-z]([\\d]{2}|[\\d]{4})/[\\d]*$")
+  str_detect(accnr, "^[A-Za-z]([\\d]{2}|[\\d]{4})/[\\d]{5}$")
 }
 
 accnr_hom <- function(accnr, hom_size) {

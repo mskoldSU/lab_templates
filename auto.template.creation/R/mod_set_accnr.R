@@ -23,6 +23,11 @@ mod_set_accnr_server <- function(id, r) {
 
     observeEvent(input$accnr_start_change, {
       req(r$order_start_accnr_df)
+      if (input$accnr_start_change$value == "") {
+        r$order_start_accnr_df[input$accnr_start_change$row, input$accnr_start_change$col] <- ""
+        updateDTs()
+      }
+
       if (valid_accnr(input$accnr_start_change$value)) {
         r$order_start_accnr_df[input$accnr_start_change$row, input$accnr_start_change$col] <- input$accnr_start_change$value
         updateDTs()
@@ -52,7 +57,7 @@ mod_set_accnr_server <- function(id, r) {
                                     })),
                                     ACCNR = unlist(lapply(cols, {
                                       function (col) {
-                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value})' value='", r$order_start_accnr_df[row, col], "'/>")
+                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
                                       }
                                     })),
                                     ARROW = rep("->", length(cols)),
@@ -62,7 +67,7 @@ mod_set_accnr_server <- function(id, r) {
                                         if (r$order_start_accnr_df[row, col] == "") {
                                           return("-")
                                         } else {
-                                          return(get_end_accnr(r$order_start_accnr_df[row, col], r$order_df[row, col_name], r$order_df[row, paste0(col_name, "_hom")]))
+                                          return(accnr_add(r$order_start_accnr_df[row, col], r$order_df[row, col_name] * r$order_df[row, paste0(col_name, "_hom")] - 1))
                                         }
                                       }
                                     })),
@@ -100,7 +105,8 @@ mod_set_accnr_server <- function(id, r) {
                               h4(r$order_df_merged[row, 2]),
                             ),
                             column(width = 10,
-                              DT::dataTableOutput(outputId = ns(paste0(row, "accnr_table")))
+                                   HTML("<button onclick='let v = this.parentElement.querySelector(\"input\").value; this.parentElement.querySelectorAll(\"input\").forEach((i) => {i.value = v; i.onchange(); });'>Copy AccNR from first to rest</button>"),
+                                   DT::dataTableOutput(outputId = ns(paste0(row, "accnr_table")))
                             )
                           ),
                           hr()
