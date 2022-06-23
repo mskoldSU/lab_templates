@@ -28,12 +28,14 @@ usethis::use_package("magrittr")
 golem::add_module(name = "cols_conf", with_test = FALSE)
 golem::add_module(name = "order_spec_conf", with_test = FALSE)
 golem::add_module(name = "set_accnr", with_test = FALSE)
+golem::add_module(name = "export", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 # golem::add_fct("helpers", with_test = TRUE)
 golem::add_fct("generate_template", with_test = TRUE)
 # golem::add_utils("helpers", with_test = TRUE)
+golem::add_utils("accnr_helpers", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
