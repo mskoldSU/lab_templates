@@ -36,7 +36,7 @@ mod_cols_conf_server <- function(id, r){
     }
 
     observeEvent(input$cols_data_file, {
-      cols_df <- read.csv(file = input$cols_data_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE)
+      cols_df <- read.csv(file = input$cols_data_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE, fileEncoding = "utf8")
 
       required_headers <- c("nrm_code", "sheet")
 

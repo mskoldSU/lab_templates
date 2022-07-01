@@ -81,7 +81,7 @@ mod_order_spec_conf_server <- function(id, r) {
     })
 
     observeEvent(input$order_spec_file, {
-      order_df <- read.csv(file = input$order_spec_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE)
+      order_df <- read.csv(file = input$order_spec_file$datapath, header = TRUE, na.strings = c("NA"), stringsAsFactors = FALSE, fileEncoding = "utf8")
 
       required_headers <- c("Art", "Lokal")
       for (rh in required_headers) {
