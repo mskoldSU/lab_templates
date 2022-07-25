@@ -4,10 +4,10 @@
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
-#' @noRd 
+#' @noRd
 #'
-#' @importFrom shiny NS tagList 
-mod_export_ui <- function(id){
+#' @importFrom shiny NS tagList
+mod_export_ui <- function(id) {
   ns <- NS(id)
   tagList(
     textOutput(outputId = ns("info_text")),
@@ -15,12 +15,12 @@ mod_export_ui <- function(id){
     DT::dataTableOutput(ns("exported_table")),
   )
 }
-    
+
 #' export Server Functions
 #'
-#' @noRd 
+#' @noRd
 mod_export_server <- function(id, r) {
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
     r$all_export_df <- NULL
