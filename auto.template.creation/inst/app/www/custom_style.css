@@ -4,3 +4,7 @@ td div {
     width: auto;
     margin: -8px -10px -8px -10px;
 }
+
+.highlight {
+    color: #00aa00;
+}

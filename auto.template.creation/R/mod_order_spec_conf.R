@@ -37,23 +37,35 @@ mod_order_spec_conf_server <- function(id, r) {
 
     observe({
       req(r$order_df)
+      req(r$order_df_merged)
       req(r$order_df_col_nor)
       req(r$order_df_col_hom)
+      req(r$order_start_accnr_df)
+      req(r$order_start_provid_df)
 
       output$order_spec_table <- DT::renderDT(rownames = FALSE, escape = FALSE, server = FALSE, selection = "none", class = "nowrap",
-                                                     options = list(scrollX = TRUE, select = list(style = "multi", items = "cell", selector = "td div")),
-                                                     extension = "Select", {
-                                                       modified_order_df <- r$order_df_merged
+                                              options = list(scrollX = TRUE, select = list(style = "multi", items = "cell", selector = "td div")),
+                                              extension = "Select", {
+                                              modified_order_df <- r$order_df_merged
 
-                                                       sheet_cols <- seq(3, ncol(modified_order_df))
-                                                       modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
-                                                         function(i, a, b) {
-                                                           modified_order_df[modified_order_df[, i] != "", i] <- paste0(a, modified_order_df[modified_order_df[, i] != "", i], b)
-                                                           modified_order_df[,i]
-                                                         }
-                                                       }, "<div>", "</div>")
-                                                       modified_order_df
-                                                     })
+                                              sheet_cols <- seq(3, ncol(modified_order_df))
+                                              modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
+                                                  function(col, pre, pre_high, suf) {
+                                                    ## modified_order_df[modified_order_df[, col] != "", col] <- paste0(pre, modified_order_df[modified_order_df[, col] != "", col], suf)
+                                                    modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
+                                                        function(row) {
+                                                          if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
+                                                            paste0(pre, modified_order_df[row, col], suf)
+                                                          } else {
+                                                            paste0(pre_high, modified_order_df[row, col], suf)
+                                                          }
+                                                        }
+                                                    }, FUN.VALUE = "")
+                                                    modified_order_df[,col]
+                                                  }
+                                              }, "<div>", "<div class='highlight'>", "</div>")
+                                              modified_order_df
+                                              })
     })
 
     observeEvent(input$set_accnr_button, {
