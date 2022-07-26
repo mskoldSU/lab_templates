@@ -34,16 +34,16 @@ mod_set_accnr_server <- function(id, r) {
       }
     })
 
-    observeEvent(input$testid_start_change, {
-      req(r$order_start_testid_df)
-      if (input$testid_start_change$value == "") {
-        r$order_start_testid_df[input$testid_start_change$row, input$testid_start_change$col] <- ""
+    observeEvent(input$provid_start_change, {
+      req(r$order_start_provid_df)
+      if (input$provid_start_change$value == "") {
+        r$order_start_provid_df[input$provid_start_change$row, input$provid_start_change$col] <- ""
         updateDTs()
-      } else if (valid_testid(input$testid_start_change$value)) {
-        r$order_start_testid_df[input$testid_start_change$row, input$testid_start_change$col] <- input$testid_start_change$value
+      } else if (valid_provid(input$provid_start_change$value)) {
+        r$order_start_provid_df[input$provid_start_change$row, input$provid_start_change$col] <- input$provid_start_change$value
         updateDTs()
       } else {
-        showNotification("Invalid TestID. Please enter on the form: Q2022/00001", type = "warning")
+        showNotification("Invalid ProvID. Please enter on the form: Q2022/00001", type = "warning")
       }
     })
 
@@ -58,7 +58,7 @@ mod_set_accnr_server <- function(id, r) {
           output[[id]] <- DT::renderDT(
                                 escape = FALSE, selection = "none", server = FALSE,
                                 rownames = colnames(r$order_df_merged[cols]),
-                                colnames = c("Count", "AccNR", "", "", "TestID", "", ""),
+                                colnames = c("Count", "AccNR", "", "", "ProvID", "", ""),
                                 options = list(dom = "t", paging = FALSE, ordering = FALSE), {
                                   data.frame(
                                     COUNT = unlist(lapply(cols, {
@@ -86,27 +86,27 @@ mod_set_accnr_server <- function(id, r) {
                                         }
                                       }
                                     })),
-                                    TESTID = unlist(lapply(cols, {
+                                    PROVID = unlist(lapply(cols, {
                                       function (col) {
-                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("testid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_testid_df[row, col], "'/>")
+                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
                                       }
                                     })),
                                     ARROW2 = rep("->", length(cols)),
-                                    UPPER_TESTID = unlist(lapply(cols, {
+                                    UPPER_PROVID = unlist(lapply(cols, {
                                       function (col) {
                                         col_name <- colnames(r$order_df_merged)[col]
-                                        if (r$order_start_testid_df[row, col] == "") {
+                                        if (r$order_start_provid_df[row, col] == "") {
                                           return("-")
                                         } else {
-                                          added_testid <- testid_add(r$order_start_testid_df[row, col], r$order_df[row, col_name] - 1)
-                                          if ("warning" %in% names(added_testid)) {
-                                            showNotification(added_testid$warning, type = "warning")
+                                          added_provid <- provid_add(r$order_start_provid_df[row, col], r$order_df[row, col_name] - 1)
+                                          if ("warning" %in% names(added_provid)) {
+                                            showNotification(added_provid$warning, type = "warning")
                                           }
-                                          return(added_testid$testid)
+                                          return(added_provid$provid)
                                         }
                                       }
                                     }))
-                                   ##  TESTID_GROUP = unlist(lapply(seq_len(length(cols)), {
+                                   ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
                                    ##    function (col) {
                                    ##      paste0("<select>",
                                    ##             paste(lapply(seq_len(length(cols)), { function(i) {

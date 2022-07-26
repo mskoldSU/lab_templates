@@ -151,8 +151,8 @@ mod_order_spec_conf_server <- function(id, r) {
       r$order_start_accnr_df <- r$order_df_merged
       r$order_start_accnr_df[, seq(3, ncol(r$order_start_accnr_df))] <- ""
 
-      r$order_start_testid_df <- r$order_df_merged
-      r$order_start_testid_df[, seq(3, ncol(r$order_start_testid_df))] <- ""
+      r$order_start_provid_df <- r$order_df_merged
+      r$order_start_provid_df[, seq(3, ncol(r$order_start_provid_df))] <- ""
     })
   })
 

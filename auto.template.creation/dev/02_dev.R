@@ -36,7 +36,7 @@ golem::add_module(name = "export", with_test = FALSE)
 golem::add_fct("generate_template", with_test = TRUE)
 # golem::add_utils("helpers", with_test = TRUE)
 golem::add_utils("accnr_helpers", with_test = TRUE)
-golem::add_utils("testid_helpers", with_test = TRUE)
+golem::add_utils("provid_helpers", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www

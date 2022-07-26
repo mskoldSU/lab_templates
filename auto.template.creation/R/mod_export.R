@@ -38,7 +38,7 @@ mod_export_server <- function(id, r) {
       req(r$order_df)
       req(r$order_df_col_nor) # Maybe remove if not used
       req(r$order_start_accnr_df)
-      req(r$order_start_testid_df)
+      req(r$order_start_provid_df)
 
       req(input$sheet_selector_select)
 
@@ -50,8 +50,8 @@ mod_export_server <- function(id, r) {
 
       for (col in input$sheet_selector_select) {
         for (row in seq_len(nrow(r$order_df))) {
-          if (r$order_start_accnr_df[row, col] == "" || r$order_start_testid_df[row, col] == "") {
-            ## TODO: Maybe option in export to include those without testid
+          if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
+            ## TODO: Maybe option in export to include those without provid
             next
           }
 
@@ -62,14 +62,14 @@ mod_export_server <- function(id, r) {
               showNotification(paste0(added_accnr$warning), type = "error")
             }
 
-            added_testid <- testid_add(r$order_start_testid_df[row, col], (i - 1) * hom_size)
-            if ("warning" %in% names(added_testid)) {
-              showNotification(paste0(added_testid$warning), type = "error")
+            added_provid <- provid_add(r$order_start_provid_df[row, col], (i - 1) * hom_size)
+            if ("warning" %in% names(added_provid)) {
+              showNotification(paste0(added_provid$warning), type = "error")
             }
 
             all_export_df <- rbind(all_export_df,
                                    c(accnr_hom(added_accnr$accnr, hom_size),    # AccNR
-                                     testid_hom(added_testid$testid, hom_size), # TestID
+                                     provid_hom(added_provid$provid, hom_size), # ProvID
                                      "",                                        # Sample code of analytical lab
                                      r$order_df[row, "Art"],                    # *species
                                      r$order_df[row, "Lokal"]                   # *samplingsite
