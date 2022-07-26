@@ -68,7 +68,7 @@ mod_set_accnr_server <- function(id, r) {
                                     })),
                                     ACCNR = unlist(lapply(cols, {
                                       function (col) {
-                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
+                                        paste0("<input class='accnrinput' onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
                                       }
                                     })),
                                     ARROW1 = rep("->", length(cols)),
@@ -88,7 +88,7 @@ mod_set_accnr_server <- function(id, r) {
                                     })),
                                     PROVID = unlist(lapply(cols, {
                                       function (col) {
-                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
+                                        paste0("<input class='providinput' onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
                                       }
                                     })),
                                     ARROW2 = rep("->", length(cols)),
@@ -139,11 +139,17 @@ mod_set_accnr_server <- function(id, r) {
                               h4(r$order_df_merged[row, 2]),
                             ),
                             column(width = 10,
-                                   HTML("<button onclick='let v = this.parentElement.querySelector(\"input\").value; this.parentElement.querySelectorAll(\"input\").forEach((i) => {i.value = v; i.onchange(); });'>Copy AccNR from first to rest</button>"),
+                                   HTML(
+                                     "<button
+onclick='
+let v = this.parentElement.querySelector(\"input.accnrinput\").value;
+this.parentElement.querySelectorAll(\"input.accnrinput\").forEach((i) => {i.value = v; i.onchange(); });
+'>Copy AccNR from first to rest</button>"
+                                   ),
                                    DT::dataTableOutput(outputId = ns(paste0(row, "accnr_table")))
                             )
                           )
-                          )
+                         )
                  )
         }
       })
