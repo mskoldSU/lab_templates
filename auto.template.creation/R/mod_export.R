@@ -28,7 +28,7 @@ mod_export_server <- function(id, r) {
     updateDT <- function() {
       req(r$all_export_df)
 
-      output$exported_table <- DT::renderDT(options = list(scrollX = TRUE), {
+      output$exported_table <- DT::renderDT(options = list(scrollX = TRUE, pageLength = 25), {
         r$all_export_df
       })
     }
@@ -38,50 +38,63 @@ mod_export_server <- function(id, r) {
       req(r$order_df)
       req(r$order_df_col_nor) # Maybe remove if not used
       req(r$order_start_accnr_df)
+      req(r$order_start_testid_df)
 
       req(input$sheet_selector_select)
 
+      message(paste0(session$token, ": Updating export table"))
+
       ## Write all export
       all_export_df <- data.frame()
-      col_names <- c("NRM's sample code", "Sample code of analytical lab", "*species", "*samplingsite")
+      col_names <- c("Accession Number", "NRM's sample code", "Sample code of analytical lab", "*species", "*samplingsite")
 
       for (col in input$sheet_selector_select) {
         for (row in seq_len(nrow(r$order_df))) {
-          if (r$order_start_accnr_df[row, col] == "") {
+          if (r$order_start_accnr_df[row, col] == "" || r$order_start_testid_df[row, col] == "") {
+            ## TODO: Maybe option in export to include those without testid
             next
           }
 
           hom_size <- r$order_df[row, paste0(col, "_hom")]
           for (i in seq_len(r$order_df[row, col])) {
+            added_accnr <- accnr_add(r$order_start_accnr_df[row, col], (i - 1) * hom_size)
+            if ("warning" %in% names(added_accnr)) {
+              showNotification(paste0(added_accnr$warning), type = "error")
+            }
+
+            added_testid <- testid_add(r$order_start_testid_df[row, col], (i - 1) * hom_size)
+            if ("warning" %in% names(added_testid)) {
+              showNotification(paste0(added_testid$warning), type = "error")
+            }
+
             all_export_df <- rbind(all_export_df,
-                                   c(accnr_hom(accnr_add(r$order_start_accnr_df[row, col], (i - 1) * hom_size), hom_size),
-                                     "testid",
-                                     r$order_df[row, "Art"],
-                                     r$order_df[row, "Lokal"]
+                                   c(accnr_hom(added_accnr$accnr, hom_size),    # AccNR
+                                     testid_hom(added_testid$testid, hom_size), # TestID
+                                     "",                                        # Sample code of analytical lab
+                                     r$order_df[row, "Art"],                    # *species
+                                     r$order_df[row, "Lokal"]                   # *samplingsite
                                      )
                                    )
           }
         }
       }
 
-      if (nrow(all_export_df) == 0) {
-        return()
+      if (nrow(all_export_df) > 0) {
+        cols_to_add <- r$cols_df[r$cols_df$sheet %in% input$sheet_selector_select, "nrm_code"]
+
+        all_export_df <- cbind(all_export_df, matrix(ncol = length(cols_to_add), nrow = nrow(all_export_df)))
+        colnames(all_export_df) <- c(col_names, cols_to_add)
       }
 
-      colnames(all_export_df) <- col_names
-
-      cols_to_add <- r$cols_df[r$cols_df$sheet %in% input$sheet_selector_select, "nrm_code"]
-
-      all_export_df <- cbind(all_export_df, matrix(ncol = length(cols_to_add), nrow = nrow(all_export_df)))
-      colnames(all_export_df) <- c(col_names, cols_to_add)
-
-      r$all_export_df <<- all_export_df
+      r$all_export_df <- all_export_df
 
       updateDT()
+
+      message(paste0(session$token, ": Done updating export table"))
     })
 
     observe({
-      req(r$order_start_accnr_df)
+      req(r$cols_df)
 
       output$sheet_selector_ui <- renderUI({
         selectInput(inputId = ns("sheet_selector_select"), label = "Select Sheets to Export", choices = unique(r$cols_df$sheet), multiple = TRUE)

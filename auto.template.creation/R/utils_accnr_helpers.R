@@ -2,7 +2,7 @@
 #'
 #' @description A utils function
 #'
-#' @return The return value, if any, from executing the utility.
+#' @return A list containing the return value in $accnr and any warning messages that got generated in $warning
 #'
 #' @noRd
 #'
@@ -15,12 +15,14 @@ accnr_add <- function(start_accnr, amount) {
 
   new_nr <- nr + amount
 
+  warn <- ""
+
   if (nchar(paste(new_nr)) > 5) {
-    warning(paste0("AccNR Overflow. Trying to create an accnr of value: ", new_nr, "."))
-    return(paste0(parts[1], "/00000"))
+    warn <- paste0("AccNR Overflow. Trying to create an accnr of value: ", new_nr, ".")
+    return(list(accnr = paste0(parts[1], "/00000"), warning = warn))
   }
 
-  return(paste0(parts[1], "/", left_pad(new_nr, 5)))
+  return(list(accnr = paste0(parts[1], "/", left_pad(new_nr, 5))))
 }
 
 valid_accnr <- function(accnr) {

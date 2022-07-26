@@ -138,9 +138,9 @@ mod_order_spec_conf_server <- function(id, r) {
         order_df[is.na(order_df[, paste0(col, "_hom")]) & !is.na(order_df[,col]), paste0(col, "_hom")] <- 1
       }
 
-      r$order_df <<- order_df
-      r$order_df_col_nor <<- col_nor
-      r$order_df_col_hom <<- col_hom
+      r$order_df <- order_df
+      r$order_df_col_nor <- col_nor
+      r$order_df_col_hom <- col_hom
 
       r$order_df_merged <- data.frame(Art = r$order_df[, "Art"], Lokal = r$order_df[, "Lokal"])
       for (nor in r$order_df_col_nor) {

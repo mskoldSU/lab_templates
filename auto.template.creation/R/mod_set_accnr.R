@@ -26,13 +26,24 @@ mod_set_accnr_server <- function(id, r) {
       if (input$accnr_start_change$value == "") {
         r$order_start_accnr_df[input$accnr_start_change$row, input$accnr_start_change$col] <- ""
         updateDTs()
-      }
-
-      if (valid_accnr(input$accnr_start_change$value)) {
+      } else if (valid_accnr(input$accnr_start_change$value)) {
         r$order_start_accnr_df[input$accnr_start_change$row, input$accnr_start_change$col] <- input$accnr_start_change$value
         updateDTs()
       } else {
         showNotification("Invalid AccNR. Please enter on the form: A2022/00001", type = "warning")
+      }
+    })
+
+    observeEvent(input$testid_start_change, {
+      req(r$order_start_testid_df)
+      if (input$testid_start_change$value == "") {
+        r$order_start_testid_df[input$testid_start_change$row, input$testid_start_change$col] <- ""
+        updateDTs()
+      } else if (valid_testid(input$testid_start_change$value)) {
+        r$order_start_testid_df[input$testid_start_change$row, input$testid_start_change$col] <- input$testid_start_change$value
+        updateDTs()
+      } else {
+        showNotification("Invalid TestID. Please enter on the form: Q2022/00001", type = "warning")
       }
     })
 
@@ -47,7 +58,7 @@ mod_set_accnr_server <- function(id, r) {
           output[[id]] <- DT::renderDT(
                                 escape = FALSE, selection = "none", server = FALSE,
                                 rownames = colnames(r$order_df_merged[cols]),
-                                colnames = c("Count", "AccNR", "", "", "ProvID", "ProvID-grupp"),
+                                colnames = c("Count", "AccNR", "", "", "TestID", "", ""),
                                 options = list(dom = "t", paging = FALSE, ordering = FALSE), {
                                   data.frame(
                                     COUNT = unlist(lapply(cols, {
@@ -60,27 +71,50 @@ mod_set_accnr_server <- function(id, r) {
                                         paste0("<input onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
                                       }
                                     })),
-                                    ARROW = rep("->", length(cols)),
+                                    ARROW1 = rep("->", length(cols)),
                                     UPPER_ACCNR = unlist(lapply(cols, {
                                       function (col) {
                                         col_name <- colnames(r$order_df_merged)[col]
                                         if (r$order_start_accnr_df[row, col] == "") {
                                           return("-")
                                         } else {
-                                          return(accnr_add(r$order_start_accnr_df[row, col], r$order_df[row, col_name] * r$order_df[row, paste0(col_name, "_hom")] - 1))
+                                          added_accnr <- accnr_add(r$order_start_accnr_df[row, col], r$order_df[row, col_name] * r$order_df[row, paste0(col_name, "_hom")] - 1)
+                                          if ("warning" %in% names(added_accnr)) {
+                                            showNotification(added_accnr$warning, type = "warning")
+                                          }
+                                          return(added_accnr$accnr)
                                         }
                                       }
                                     })),
-                                    TESTID = rep("testid", length(cols)),
-                                    TESTIDGROUP = unlist(lapply(seq_len(length(cols)), {
+                                    TESTID = unlist(lapply(cols, {
                                       function (col) {
-                                        paste0("<select>",
-                                               paste(lapply(seq_len(length(cols)), { function(i) {
-                                                 paste0("<option", " selected"[i == col], ">", i, "</option>")
-                                               } }), collapse = ""),
-                                               "</select>")
+                                        paste0("<input onchange='Shiny.setInputValue(\"", ns("testid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_testid_df[row, col], "'/>")
+                                      }
+                                    })),
+                                    ARROW2 = rep("->", length(cols)),
+                                    UPPER_TESTID = unlist(lapply(cols, {
+                                      function (col) {
+                                        col_name <- colnames(r$order_df_merged)[col]
+                                        if (r$order_start_testid_df[row, col] == "") {
+                                          return("-")
+                                        } else {
+                                          added_testid <- testid_add(r$order_start_testid_df[row, col], r$order_df[row, col_name] - 1)
+                                          if ("warning" %in% names(added_testid)) {
+                                            showNotification(added_testid$warning, type = "warning")
+                                          }
+                                          return(added_testid$testid)
+                                        }
                                       }
                                     }))
+                                   ##  TESTID_GROUP = unlist(lapply(seq_len(length(cols)), {
+                                   ##    function (col) {
+                                   ##      paste0("<select>",
+                                   ##             paste(lapply(seq_len(length(cols)), { function(i) {
+                                   ##               paste0("<option", " selected"[i == col], ">", i, "</option>")
+                                   ##             } }), collapse = ""),
+                                   ##             "</select>")
+                                   ##    }
+                                   ##  }))
                                   )
                                 })
         }
@@ -108,9 +142,9 @@ mod_set_accnr_server <- function(id, r) {
                                    HTML("<button onclick='let v = this.parentElement.querySelector(\"input\").value; this.parentElement.querySelectorAll(\"input\").forEach((i) => {i.value = v; i.onchange(); });'>Copy AccNR from first to rest</button>"),
                                    DT::dataTableOutput(outputId = ns(paste0(row, "accnr_table")))
                             )
-                          ),
-                          hr()
-                          ))
+                          )
+                          )
+                 )
         }
       })
 

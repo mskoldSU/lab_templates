@@ -47,7 +47,7 @@ mod_cols_conf_server <- function(id, r){
         }
       }
 
-      r$cols_df <<- cols_df
+      r$cols_df <- cols_df
 
       output$sheet_selector_ui <- renderUI({
         selectInput(inputId = ns("sheet_selector_select"), label = "Select Sheets to Preview", choices = unique(r$cols_df$sheet), selected = unique(r$cols_df$sheet), multiple = TRUE)
