@@ -62,14 +62,14 @@ mod_export_server <- function(id, r) {
               showNotification(paste0(added_accnr$warning), type = "error")
             }
 
-            added_provid <- provid_add(r$order_start_provid_df[row, col], (i - 1) * hom_size)
+            added_provid <- provid_add(r$order_start_provid_df[row, col], i - 1)
             if ("warning" %in% names(added_provid)) {
               showNotification(paste0(added_provid$warning), type = "error")
             }
 
             all_export_df <- rbind(all_export_df,
                                    c(accnr_hom(added_accnr$accnr, hom_size),    # AccNR
-                                     provid_hom(added_provid$provid, hom_size), # ProvID
+                                     added_provid$provid,                       # ProvID
                                      "",                                        # Sample code of analytical lab
                                      r$order_df[row, "Art"],                    # *species
                                      r$order_df[row, "Lokal"]                   # *samplingsite
