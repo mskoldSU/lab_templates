@@ -85,7 +85,16 @@ mod_set_accnr_server <- function(id, r) {
             })),
             PROVID = unlist(lapply(cols, {
               function (col) {
-                paste0("<input class='providinput' onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
+                paste0(
+                  "<input class='providinput' onchange='Shiny.setInputValue(\"",
+                  ns("provid_start_change"),
+                  "\", { row: ",
+                  row,
+                  ", col: ",
+                  col,
+                  ", value: this.value}, { priority: \"event\"});' value='",
+                  r$order_start_provid_df[row, col],
+                  "'/>")
               }
             })),
             ARROW2 = rep("->", length(cols)),
@@ -102,7 +111,8 @@ mod_set_accnr_server <- function(id, r) {
                   return(added_provid$provid)
                 }
               }
-            }))
+            })),
+            SPACER = rep("<div style='width=100%'></div>", length(cols))
             ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
             ##    function (col) {
             ##      paste0("<select>",
@@ -118,10 +128,10 @@ mod_set_accnr_server <- function(id, r) {
             output[[id]] <- DT::renderDT(
                                   escape = FALSE, selection = "none", server = TRUE,
                                   rownames = colnames(r$order_df_merged[cols]),
-                                  colnames = c("Count", "AccNR", "", "", "ProvID", "", ""),
-                                  options = list(dom = "t", paging = FALSE, ordering = FALSE), {
-                                    df
-                                  })
+                                  colnames = c("Count", "AccNR", "", "", "ProvID", "", "", ""),
+                                  options = list(dom = "t", paging = FALSE, ordering = FALSE),
+                                  df
+                                )
             proxies[[id]] <- DT::dataTableProxy(id)
           } else {
             DT::replaceData(isolate(proxies[[id]]), df, resetPaging = FALSE)
@@ -153,13 +163,19 @@ mod_set_accnr_server <- function(id, r) {
                                      ),
                               column(width = 10,
                                      HTML(
-                                       "<button
-onclick='
-let v = this.parentElement.querySelector(\"input.accnrinput\").value;
-this.parentElement.querySelectorAll(\"input.accnrinput\").forEach((i) => {i.value = v; i.onchange(); });
-'>Copy AccNR from first to rest</button>"
+                                       paste0(
+                                         "<button ",
+                                         "onclick='",
+                                         "let v = this.parentElement.querySelector(\"input.accnrinput\").value;\n",
+                                         "this.parentElement.querySelectorAll(\"input.accnrinput\").forEach((i) => {i.value = v; i.onchange(); });",
+                                         "'>",
+                                         "Copy AccNR from first to rest",
+                                         "</button>"
+                                       )
                                      ),
-                                     DT::DTOutput(outputId = ns(id))
+                                     div(class="set_accnr_div_dt_holder",
+                                         DT::DTOutput(outputId = ns(id))
+                                         )
                                      )
                             )
                             )

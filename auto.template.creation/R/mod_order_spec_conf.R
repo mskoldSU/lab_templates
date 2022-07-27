@@ -39,7 +39,18 @@ mod_order_spec_conf_server <- function(id, r) {
     ns <- session$ns
 
     save_selected <- reactiveVal()
-    selected_filtered <- reactiveVal()
+
+    get_selectable_cells <- function() {
+      sel <- matrix(nrow = 0, ncol = 2)
+      for (col in seq(3,ncol(r$order_df_merged))) {
+        for (row in seq(1,nrow(r$order_df_merged))) {
+          if (r$order_df_merged[row, col] != "") {
+            sel <- rbind(sel, matrix(c(row, col - 1), nrow = 1, ncol = 2))
+          }
+        }
+      }
+      sel
+    }
 
     generate_order_spec_table <- function() {
       modified_order_df <- r$order_df_merged
@@ -47,7 +58,6 @@ mod_order_spec_conf_server <- function(id, r) {
       sheet_cols <- seq(3, ncol(modified_order_df))
       modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
         function(col, pre, pre_high, suf) {
-          ## modified_order_df[modified_order_df[, col] != "", col] <- paste0(pre, modified_order_df[modified_order_df[, col] != "", col], suf)
           modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
             function(row) {
               if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
@@ -77,34 +87,15 @@ mod_order_spec_conf_server <- function(id, r) {
                                        escape = FALSE,
                                        server = FALSE,
                                        selection =
-                                         list(target = "cell", selected = isolate(save_selected())),
+                                         list(target = "cell", selected = isolate(save_selected()), selectable = get_selectable_cells()),
                                        class = "nowrap",
-                                       {
-                                         df
-                                       })
+                                       df
+                                     )
     })
 
     observe({
-      req(r$order_df_merged)
       req(!is.null(input$order_spec_table_cells_selected))
-
-      s <- input$order_spec_table_cells_selected
-      sf <- matrix(nrow = 0, ncol = ncol(s))
-      if (nrow(input$order_spec_table_cells_selected) > 0) {
-        s[,2] <- s[,2] + 1
-        for (row in seq_len(nrow(s))) {
-          if (s[row,2] < 3) {
-            next
-          }
-          if (r$order_df_merged[s[row, 1], s[row, 2]] != "") {
-            sf <- rbind(sf, s[row,])
-          }
-        }
-      }
-
-      output$selected_count_text <- renderText(paste0("Selected: ", nrow(sf)))
-
-      selected_filtered(sf)
+      output$selected_count_text <- renderText(paste0("Selected: ", nrow(input$order_spec_table_cells_selected)))
     })
 
     observeEvent(input$set_accnr_button, {
@@ -120,7 +111,9 @@ mod_order_spec_conf_server <- function(id, r) {
       }
 
       save_selected(input$order_spec_table_cells_selected)
-      r$order_spec_selected <- selected_filtered()
+      selected_filtered <- input$order_spec_table_cells_selected
+      selected_filtered[,2] <- selected_filtered[,2] + 1
+      r$order_spec_selected <- selected_filtered
 
       ## This is read by JS in custom_js.js and updates the variable show_order_spec in the client
       session$sendCustomMessage("show_hide_order_spec", TRUE);

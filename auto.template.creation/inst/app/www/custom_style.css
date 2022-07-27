@@ -8,3 +8,11 @@ td div {
 .highlight {
     color: #00aa00;
 }
+
+div.set_accnr_div_dt_holder td:last-child {
+    width: 100%;
+}
+
+div.set_accnr_div_dt_holder td {
+    min-width: 15%;
+}
