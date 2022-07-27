@@ -12,20 +12,8 @@ app_ui <- function(request) {
     fluidPage(
       title = "Automatic Template Creation",
       HTML("<h1>aut<span style='color: #A52A2A;'>O</span>matic templa<span style='color: #A52A2A;'>T</span>e <span style='color: #A52A2A;'>C</span>reation</h1>"),
-      tabsetPanel(id = "tabs", type = "tabs",
-                  tabPanel("Kolumner", id = "cols-tab",
-                           br(),
-                           mod_cols_conf_ui("cols_conf_1"),
-                           ),
-                  tabPanel("Provberedning", id = "provprep-tab",
-                           br(),
-                           mod_order_spec_conf_ui("order_spec_conf_1"),
-                           ),
-                  tabPanel("Export", id = "export-tab",
-                           br(),
-                           mod_export_ui("export_1")
-                           )
-                  )
+      ## Login
+      mod_login_ui("login_1")
     )
   )
 }

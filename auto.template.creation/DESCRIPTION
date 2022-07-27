@@ -11,6 +11,9 @@ Imports:
     golem (>= 0.3.2),
     magrittr,
     shiny (>= 1.7.1),
+    shinyauthr,
+    shinyjs,
+    sodium,
     stringr
 Suggests: 
     covr,
