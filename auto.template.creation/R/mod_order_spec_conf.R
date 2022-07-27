@@ -17,8 +17,9 @@ mod_order_spec_conf_ui <- function(id) {
                      wellPanel(
                        h4("Select which to specify AccNR for, then: ",
                           actionButton(inputId = ns("set_accnr_button"), label = "Set AccNR")),
+                       textOutput(outputId = ns("selected_count_text")),
                        br(),
-                       DT::dataTableOutput(ns("order_spec_table")),
+                       DT::DTOutput(ns("order_spec_table")),
                        )
                      ),
     conditionalPanel(condition = "show_order_spec == true",
@@ -35,6 +36,31 @@ mod_order_spec_conf_server <- function(id, r) {
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    save_selected <- reactiveVal()
+    selected_filtered <- reactiveVal()
+
+    generate_order_spec_table <- function() {
+      modified_order_df <- r$order_df_merged
+
+      sheet_cols <- seq(3, ncol(modified_order_df))
+      modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
+        function(col, pre, pre_high, suf) {
+          ## modified_order_df[modified_order_df[, col] != "", col] <- paste0(pre, modified_order_df[modified_order_df[, col] != "", col], suf)
+          modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
+            function(row) {
+              if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
+                paste0(pre, modified_order_df[row, col], suf)
+              } else {
+                paste0(pre_high, modified_order_df[row, col], suf)
+              }
+            }
+          }, FUN.VALUE = "")
+          modified_order_df[,col]
+        }
+      }, "<div>", "<div class='highlight'>", "</div>")
+      modified_order_df
+    }
+
     observe({
       req(r$order_df)
       req(r$order_df_merged)
@@ -43,29 +69,41 @@ mod_order_spec_conf_server <- function(id, r) {
       req(r$order_start_accnr_df)
       req(r$order_start_provid_df)
 
-      output$order_spec_table <- DT::renderDT(rownames = FALSE, escape = FALSE, server = FALSE, selection = "none", class = "nowrap",
-                                              options = list(scrollX = TRUE, select = list(style = "multi", items = "cell", selector = "td div")),
-                                              extension = "Select", {
-                                              modified_order_df <- r$order_df_merged
+      df <- generate_order_spec_table()
+      output$order_spec_table <- DT::renderDT(
+                                       rownames = FALSE,
+                                       escape = FALSE,
+                                       server = FALSE,
+                                       selection =
+                                         list(target = "cell", selected = isolate(save_selected())),
+                                       class = "nowrap",
+                                       options = list(scrollX = TRUE),
+                                       {
+                                         df
+                                       })
+    })
 
-                                              sheet_cols <- seq(3, ncol(modified_order_df))
-                                              modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
-                                                  function(col, pre, pre_high, suf) {
-                                                    ## modified_order_df[modified_order_df[, col] != "", col] <- paste0(pre, modified_order_df[modified_order_df[, col] != "", col], suf)
-                                                    modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
-                                                        function(row) {
-                                                          if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
-                                                            paste0(pre, modified_order_df[row, col], suf)
-                                                          } else {
-                                                            paste0(pre_high, modified_order_df[row, col], suf)
-                                                          }
-                                                        }
-                                                    }, FUN.VALUE = "")
-                                                    modified_order_df[,col]
-                                                  }
-                                              }, "<div>", "<div class='highlight'>", "</div>")
-                                              modified_order_df
-                                              })
+    observe({
+      req(r$order_df_merged)
+      req(!is.null(input$order_spec_table_cells_selected))
+
+      s <- input$order_spec_table_cells_selected
+      sf <- matrix(nrow = 0, ncol = ncol(s))
+      if (nrow(input$order_spec_table_cells_selected) > 0) {
+        s[,2] <- s[,2] + 1
+        for (row in seq_len(nrow(s))) {
+          if (s[row,2] < 3) {
+            next
+          }
+          if (r$order_df_merged[s[row, 1], s[row, 2]] != "") {
+            sf <- rbind(sf, s[row,])
+          }
+        }
+      }
+
+      output$selected_count_text <- renderText(paste0("Selected: ", nrow(sf)))
+
+      selected_filtered(sf)
     })
 
     observeEvent(input$set_accnr_button, {
@@ -80,8 +118,8 @@ mod_order_spec_conf_server <- function(id, r) {
         return()
       }
 
-      r$order_spec_selected <- input$order_spec_table_cells_selected
-      r$order_spec_selected[,2] <- r$order_spec_selected[,2] + 1
+      save_selected(input$order_spec_table_cells_selected)
+      r$order_spec_selected <- selected_filtered()
 
       ## This is read by JS in custom_js.js and updates the variable show_order_spec in the client
       session$sendCustomMessage("show_hide_order_spec", TRUE);

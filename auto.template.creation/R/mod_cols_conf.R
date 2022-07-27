@@ -15,7 +15,7 @@ mod_cols_conf_ui <- function(id){
     wellPanel(
       h4("Preview Columns"),
       uiOutput(outputId = ns("sheet_selector_ui")),
-      DT::dataTableOutput(ns("input_table")),
+      DT::DTOutput(ns("input_table")),
     )
   )
 }

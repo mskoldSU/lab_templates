@@ -21,6 +21,8 @@ mod_set_accnr_server <- function(id, r) {
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    proxies <- reactiveValues()
+
     observeEvent(input$accnr_start_change, {
       req(r$order_start_accnr_df)
       if (input$accnr_start_change$value == "") {
@@ -55,68 +57,76 @@ mod_set_accnr_server <- function(id, r) {
           cols <- r$order_spec_selected[r$order_spec_selected[, 1] == row, 2]
 
           id <- paste0(row, "accnr_table")
-          output[[id]] <- DT::renderDT(
-                                escape = FALSE, selection = "none", server = FALSE,
-                                rownames = colnames(r$order_df_merged[cols]),
-                                colnames = c("Count", "AccNR", "", "", "ProvID", "", ""),
-                                options = list(dom = "t", paging = FALSE, ordering = FALSE), {
-                                  data.frame(
-                                    COUNT = unlist(lapply(cols, {
-                                      function (col) {
-                                        r$order_df_merged[row, col]
-                                      }
-                                    })),
-                                    ACCNR = unlist(lapply(cols, {
-                                      function (col) {
-                                        paste0("<input class='accnrinput' onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
-                                      }
-                                    })),
-                                    ARROW1 = rep("->", length(cols)),
-                                    UPPER_ACCNR = unlist(lapply(cols, {
-                                      function (col) {
-                                        col_name <- colnames(r$order_df_merged)[col]
-                                        if (r$order_start_accnr_df[row, col] == "") {
-                                          return("-")
-                                        } else {
-                                          added_accnr <- accnr_add(r$order_start_accnr_df[row, col], r$order_df[row, col_name] * r$order_df[row, paste0(col_name, "_hom")] - 1)
-                                          if ("warning" %in% names(added_accnr)) {
-                                            showNotification(added_accnr$warning, type = "warning")
-                                          }
-                                          return(added_accnr$accnr)
-                                        }
-                                      }
-                                    })),
-                                    PROVID = unlist(lapply(cols, {
-                                      function (col) {
-                                        paste0("<input class='providinput' onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
-                                      }
-                                    })),
-                                    ARROW2 = rep("->", length(cols)),
-                                    UPPER_PROVID = unlist(lapply(cols, {
-                                      function (col) {
-                                        col_name <- colnames(r$order_df_merged)[col]
-                                        if (r$order_start_provid_df[row, col] == "") {
-                                          return("-")
-                                        } else {
-                                          added_provid <- provid_add(r$order_start_provid_df[row, col], r$order_df[row, col_name] - 1)
-                                          if ("warning" %in% names(added_provid)) {
-                                            showNotification(added_provid$warning, type = "warning")
-                                          }
-                                          return(added_provid$provid)
-                                        }
-                                      }
-                                    }))
-                                   ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
-                                   ##    function (col) {
-                                   ##      paste0("<select>",
-                                   ##             paste(lapply(seq_len(length(cols)), { function(i) {
-                                   ##               paste0("<option", " selected"[i == col], ">", i, "</option>")
-                                   ##             } }), collapse = ""),
-                                   ##             "</select>")
-                                   ##    }
-                                   ##  }))
-                                  )
-                                })
+          df <- data.frame(
+            COUNT = unlist(lapply(cols, {
+              function (col) {
+                r$order_df_merged[row, col]
+              }
+            })),
+            ACCNR = unlist(lapply(cols, {
+              function (col) {
+                paste0("<input class='accnrinput' onchange='Shiny.setInputValue(\"", ns("accnr_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_accnr_df[row, col], "'/>")
+              }
+            })),
+            ARROW1 = rep("->", length(cols)),
+            UPPER_ACCNR = unlist(lapply(cols, {
+              function (col) {
+                col_name <- colnames(r$order_df_merged)[col]
+                if (r$order_start_accnr_df[row, col] == "") {
+                  return("-")
+                } else {
+                  added_accnr <- accnr_add(r$order_start_accnr_df[row, col], r$order_df[row, col_name] * r$order_df[row, paste0(col_name, "_hom")] - 1)
+                  if ("warning" %in% names(added_accnr)) {
+                    showNotification(added_accnr$warning, type = "warning")
+                  }
+                  return(added_accnr$accnr)
+                }
+              }
+            })),
+            PROVID = unlist(lapply(cols, {
+              function (col) {
+                paste0("<input class='providinput' onchange='Shiny.setInputValue(\"", ns("provid_start_change"), "\", { row: ", row, ", col: ", col, ", value: this.value}, { priority: \"event\"});' value='", r$order_start_provid_df[row, col], "'/>")
+              }
+            })),
+            ARROW2 = rep("->", length(cols)),
+            UPPER_PROVID = unlist(lapply(cols, {
+              function (col) {
+                col_name <- colnames(r$order_df_merged)[col]
+                if (r$order_start_provid_df[row, col] == "") {
+                  return("-")
+                } else {
+                  added_provid <- provid_add(r$order_start_provid_df[row, col], r$order_df[row, col_name] - 1)
+                  if ("warning" %in% names(added_provid)) {
+                    showNotification(added_provid$warning, type = "warning")
+                  }
+                  return(added_provid$provid)
+                }
+              }
+            }))
+            ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
+            ##    function (col) {
+            ##      paste0("<select>",
+            ##             paste(lapply(seq_len(length(cols)), { function(i) {
+            ##               paste0("<option", " selected"[i == col], ">", i, "</option>")
+            ##             } }), collapse = ""),
+            ##             "</select>")
+            ##    }
+            ##  }))
+          )
+
+          if (isolate(is.null(proxies[[id]]))) {
+            output[[id]] <- DT::renderDT(
+                                  escape = FALSE, selection = "none", server = TRUE,
+                                  rownames = colnames(r$order_df_merged[cols]),
+                                  colnames = c("Count", "AccNR", "", "", "ProvID", "", ""),
+                                  options = list(dom = "t", paging = FALSE, ordering = FALSE), {
+                                    df
+                                  })
+            proxies[[id]] <- DT::dataTableProxy(id)
+          } else {
+            DT::replaceData(isolate(proxies[[id]]), df, resetPaging = FALSE)
+            DT::updateFilters(isolate(proxies[[id]]), df)
+          }
         }
       })
     }
@@ -128,29 +138,32 @@ mod_set_accnr_server <- function(id, r) {
 
       lapply(rows, {
         function(row) {
-        cols <- r$order_spec_selected[r$order_spec_selected[, 1] == row, 2]
+          cols <- r$order_spec_selected[r$order_spec_selected[, 1] == row, 2]
 
-        insertUI("div.set_accnr_categories", where = "afterEnd",
-                 tags$div(class = "accnr_setter",
-                          hr(),
-                          fluidRow(
-                            column(width = 2,
-                              h4(r$order_df_merged[row, 1]),
-                              h4(r$order_df_merged[row, 2]),
-                            ),
-                            column(width = 10,
-                                   HTML(
-                                     "<button
+          id <- paste0(row, "accnr_table")
+          proxies[[id]] <- NULL
+
+          insertUI("div.set_accnr_categories", where = "afterEnd",
+                   tags$div(class = "accnr_setter",
+                            hr(),
+                            fluidRow(
+                              column(width = 2,
+                                     h4(r$order_df_merged[row, 1]),
+                                     h4(r$order_df_merged[row, 2]),
+                                     ),
+                              column(width = 10,
+                                     HTML(
+                                       "<button
 onclick='
 let v = this.parentElement.querySelector(\"input.accnrinput\").value;
 this.parentElement.querySelectorAll(\"input.accnrinput\").forEach((i) => {i.value = v; i.onchange(); });
 '>Copy AccNR from first to rest</button>"
-                                   ),
-                                   DT::dataTableOutput(outputId = ns(paste0(row, "accnr_table")))
+                                     ),
+                                     DT::DTOutput(outputId = ns(id))
+                                     )
                             )
-                          )
-                         )
-                 )
+                            )
+                   )
         }
       })
 
@@ -159,9 +172,8 @@ this.parentElement.querySelectorAll(\"input.accnrinput\").forEach((i) => {i.valu
 
     observe({
       r$order_spec_selected
-      r$order_df_modified
       ## Maybe make sure this only runs if the tables are visible
-      updateList()
+      isolate(updateList())
     })
   })
 }

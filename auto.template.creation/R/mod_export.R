@@ -12,7 +12,7 @@ mod_export_ui <- function(id) {
   tagList(
     textOutput(outputId = ns("info_text")),
     uiOutput(outputId = ns("sheet_selector_ui")),
-    DT::dataTableOutput(ns("exported_table")),
+    DT::DTOutput(ns("exported_table")),
   )
 }
 
