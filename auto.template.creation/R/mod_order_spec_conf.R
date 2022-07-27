@@ -19,7 +19,9 @@ mod_order_spec_conf_ui <- function(id) {
                           actionButton(inputId = ns("set_accnr_button"), label = "Set AccNR")),
                        textOutput(outputId = ns("selected_count_text")),
                        br(),
-                       DT::DTOutput(ns("order_spec_table")),
+                       div(style="overflow-x: auto",
+                           DT::DTOutput(ns("order_spec_table")),
+                           )
                        )
                      ),
     conditionalPanel(condition = "show_order_spec == true",
@@ -77,7 +79,6 @@ mod_order_spec_conf_server <- function(id, r) {
                                        selection =
                                          list(target = "cell", selected = isolate(save_selected())),
                                        class = "nowrap",
-                                       options = list(scrollX = TRUE),
                                        {
                                          df
                                        })
