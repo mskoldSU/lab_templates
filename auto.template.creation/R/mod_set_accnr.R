@@ -113,15 +113,6 @@ mod_set_accnr_server <- function(id, r) {
               }
             })),
             SPACER = rep(as.character(div(style="width=100%;")), length(cols))
-            ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
-            ##    function (col) {
-            ##      paste0("<select>",
-            ##             paste(lapply(seq_len(length(cols)), { function(i) {
-            ##               paste0("<option", " selected"[i == col], ">", i, "</option>")
-            ##             } }), collapse = ""),
-            ##             "</select>")
-            ##    }
-            ##  }))
           )
 
           rownames(df) <- colnames(r$order_df_merged[cols])
