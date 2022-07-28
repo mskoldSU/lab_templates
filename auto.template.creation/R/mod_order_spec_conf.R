@@ -57,19 +57,16 @@ mod_order_spec_conf_server <- function(id, r) {
 
       sheet_cols <- seq(3, ncol(modified_order_df))
       modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
-        function(col, pre, pre_high, suf) {
+        function(col) {
           modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
             function(row) {
-              if (r$order_start_accnr_df[row, col] == "" || r$order_start_provid_df[row, col] == "") {
-                paste0(pre, modified_order_df[row, col], suf)
-              } else {
-                paste0(pre_high, modified_order_df[row, col], suf)
-              }
+              fully_entered <- r$order_start_accnr_df[row, col] != "" && r$order_start_provid_df[row, col] != ""
+              as.character(div(modified_order_df[row, col], class= (if (fully_entered) "highlight" else "")))
             }
           }, FUN.VALUE = "")
           modified_order_df[,col]
         }
-      }, "<div>", "<div class='highlight'>", "</div>")
+      })
       modified_order_df
     }
 

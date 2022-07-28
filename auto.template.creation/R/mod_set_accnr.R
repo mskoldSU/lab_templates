@@ -112,7 +112,7 @@ mod_set_accnr_server <- function(id, r) {
                 }
               }
             })),
-            SPACER = rep("<div style='width=100%'></div>", length(cols))
+            SPACER = rep(as.character(div(style="width=100%;")), length(cols))
             ##  PROVID_GROUP = unlist(lapply(seq_len(length(cols)), {
             ##    function (col) {
             ##      paste0("<select>",
@@ -124,10 +124,11 @@ mod_set_accnr_server <- function(id, r) {
             ##  }))
           )
 
+          rownames(df) <- colnames(r$order_df_merged[cols])
+
           if (isolate(is.null(proxies[[id]]))) {
             output[[id]] <- DT::renderDT(
                                   escape = FALSE, selection = "none", server = TRUE,
-                                  rownames = colnames(r$order_df_merged[cols]),
                                   colnames = c("Count", "AccNR", "", "", "ProvID", "", "", ""),
                                   options = list(dom = "t", paging = FALSE, ordering = FALSE),
                                   df

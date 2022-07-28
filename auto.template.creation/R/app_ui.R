@@ -8,6 +8,8 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    # Init shinyjs
+    shinyjs::useShinyjs(),
     # Your application UI logic
     fluidPage(
       title = "Automatic Template Creation",

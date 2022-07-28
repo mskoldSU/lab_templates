@@ -20,7 +20,6 @@ attachment::att_amend_desc()
 ## Dependencies
 usethis::use_package("DT")
 usethis::use_package("magrittr")
-usethis::use_package("shinyauthr")
 usethis::use_package("shinyjs")
 usethis::use_package("sodium")
 
@@ -29,6 +28,9 @@ usethis::use_package("sodium")
 # golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 golem::add_module(name = "login", with_test = FALSE)
+golem::add_module(name = "user_management", with_test = FALSE)
+golem::add_module(name = "project_management", with_test = FALSE)
+golem::add_module(name = "lab_management", with_test = FALSE)
 golem::add_module(name = "cols_conf", with_test = FALSE)
 golem::add_module(name = "order_spec_conf", with_test = FALSE)
 golem::add_module(name = "set_accnr", with_test = FALSE)
