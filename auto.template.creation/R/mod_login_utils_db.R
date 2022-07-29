@@ -34,7 +34,11 @@ load_credentials <- function() {
   # Construct the fetching query
   query <- sprintf("SELECT * FROM %s", table)
   # Submit the fetch query and disconnect
-  data <- dbGetQuery(db, query)
+  data <- tryCatch({
+    dbGetQuery(db, query)
+  }, error = function(cond) {
+    NULL
+  })
   dbDisconnect(db)
   data
 }
