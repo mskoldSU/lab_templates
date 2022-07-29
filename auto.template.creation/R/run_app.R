@@ -14,13 +14,7 @@ run_app <- function(
   uiPattern = "/",
   ...
 ) {
-  credentials <<- data.frame(
-    username_id =        c("user-admin", "project-manager", "lab-user"),
-    passod      = sapply(c("user-admin", "project-manager", "lab-user"), sodium::password_store),
-    permission  =        c("user-admin", "project-manager", "lab-user"),
-    stringsAsFactors = FALSE
-  )
-  credentials <<- credentials[order(credentials$username_id),]
+  credentials <<- load_credentials()
 
   with_golem_options(
     app = shinyApp(

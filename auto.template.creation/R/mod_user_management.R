@@ -40,15 +40,16 @@ mod_user_management_server <- function(id, r) {
     }
 
     observeEvent(input$add_user, {
-      if ("newuser" %in% credentials$username_id) {
+      if ("newuser" %in% credentials$username) {
         showNotification("Username: 'newuser' already taken", type = "message")
         return()
       }
 
       new_row <- nrow(credentials) + 1
       credentials[new_row,] <<- ""
-      credentials[new_row, "username_id"] <<- "newuser"
-      credentials <<- credentials[order(credentials$username_id),]
+      credentials[new_row, "username"] <<- "newuser"
+      credentials <<- credentials[order(credentials$username),]
+      save_credentials()
       updateUserDT()
     })
 
@@ -61,12 +62,12 @@ mod_user_management_server <- function(id, r) {
         return()
       }
 
-      if (colnames(credentials)[col] == "passod") {
+      if (colnames(credentials)[col] == "password") {
         credentials[row, col] <<- sodium::password_store(input$user_table_cell_edit$value)
-      } else if (colnames(credentials)[col] == "username_id") {
+      } else if (colnames(credentials)[col] == "username") {
         if (input$user_table_cell_edit$value == "") {
           credentials <<- credentials[-row,]
-        } else if (input$user_table_cell_edit$value %in% credentials[,"username_id"]) {
+        } else if (input$user_table_cell_edit$value %in% credentials[,"username"]) {
           showNotification(paste0("Username: '", input$user_table_cell_edit$value, "' is already taken."), type = "message")
         } else {
           credentials[row, col] <<- input$user_table_cell_edit$value
@@ -75,8 +76,8 @@ mod_user_management_server <- function(id, r) {
         credentials[row, col] <<- input$user_table_cell_edit$value
       }
 
-      credentials <<- credentials[order(credentials$username_id),]
-
+      credentials <<- credentials[order(credentials$username),]
+      save_credentials()
       updateUserDT()
     })
 

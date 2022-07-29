@@ -1,6 +1,6 @@
 Tests and Coverage
 ================
-28 July, 2022 14:00:57
+29 July, 2022 12:50:18
 
 -   <a href="#coverage" id="toc-coverage">Coverage</a>
 -   <a href="#unit-tests" id="toc-unit-tests">Unit Tests</a>
@@ -22,6 +22,7 @@ Coverage summary is created using the
 | [R/mod_cols_conf.R](../R/mod_cols_conf.R)                   |      0       |
 | [R/mod_export.R](../R/mod_export.R)                         |      0       |
 | [R/mod_lab_management.R](../R/mod_lab_management.R)         |      0       |
+| [R/mod_login_utils_db.R](../R/mod_login_utils_db.R)         |      0       |
 | [R/mod_login.R](../R/mod_login.R)                           |      0       |
 | [R/mod_order_spec_conf.R](../R/mod_order_spec_conf.R)       |      0       |
 | [R/mod_project_management.R](../R/mod_project_management.R) |      0       |
@@ -40,8 +41,8 @@ Unit Test summary is created using the
 
 | file                                                                  |   n |  time | error | failed | skipped | warning |
 |:----------------------------------------------------------------------|----:|------:|------:|-------:|--------:|--------:|
-| [test-app.R](testthat/test-app.R)                                     |   1 | 0.023 |     0 |      0 |       0 |       0 |
-| [test-fct_generate_template.R](testthat/test-fct_generate_template.R) |   1 | 0.002 |     0 |      0 |       0 |       0 |
+| [test-app.R](testthat/test-app.R)                                     |   1 | 0.021 |     0 |      0 |       0 |       0 |
+| [test-fct_generate_template.R](testthat/test-fct_generate_template.R) |   1 | 0.003 |     0 |      0 |       0 |       0 |
 | [test-utils_accnr_helpers.R](testthat/test-utils_accnr_helpers.R)     |   1 | 0.002 |     0 |      0 |       0 |       0 |
 | [test-utils_provid_helpers.R](testthat/test-utils_provid_helpers.R)   |   1 | 0.003 |     0 |      0 |       0 |       0 |
 
@@ -52,8 +53,8 @@ Show Detailed Test Results
 
 | file                                                                     | context               | test                 | status |   n |  time |
 |:-------------------------------------------------------------------------|:----------------------|:---------------------|:-------|----:|------:|
-| [test-app.R](testthat/test-app.R#L2)                                     | app                   | multiplication works | PASS   |   1 | 0.023 |
-| [test-fct_generate_template.R](testthat/test-fct_generate_template.R#L2) | fct_generate_template | multiplication works | PASS   |   1 | 0.002 |
+| [test-app.R](testthat/test-app.R#L2)                                     | app                   | multiplication works | PASS   |   1 | 0.021 |
+| [test-fct_generate_template.R](testthat/test-fct_generate_template.R#L2) | fct_generate_template | multiplication works | PASS   |   1 | 0.003 |
 | [test-utils_accnr_helpers.R](testthat/test-utils_accnr_helpers.R#L2)     | utils_accnr_helpers   | multiplication works | PASS   |   1 | 0.002 |
 | [test-utils_provid_helpers.R](testthat/test-utils_provid_helpers.R#L2)   | utils_provid_helpers  | multiplication works | PASS   |   1 | 0.003 |
 

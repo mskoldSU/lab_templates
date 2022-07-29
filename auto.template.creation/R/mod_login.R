@@ -49,9 +49,9 @@ mod_login_server <- function(id, r) {
       if (USER$login == FALSE) {
         Username <- isolate(input$user_name)
         Password <- isolate(input$passwd)
-        user_index <- which(credentials$username_id==Username)
+        user_index <- which(credentials$username==Username)
         if (length(user_index) == 1) {
-          pasmatch  <- credentials["passod"][user_index,]
+          pasmatch  <- credentials["password"][user_index,]
           pasverify <- sodium::password_verify(pasmatch, Password)
           perm <- credentials["permission"][user_index,]
           if (pasverify) {

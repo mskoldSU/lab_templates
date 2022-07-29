@@ -2,6 +2,11 @@
 
 export(run_app)
 import(shiny)
+importFrom(DBI,dbConnect)
+importFrom(DBI,dbDisconnect)
+importFrom(DBI,dbGetQuery)
+importFrom(DBI,dbWriteTable)
+importFrom(RSQLite,SQLite)
 importFrom(golem,activate_js)
 importFrom(golem,add_resource_path)
 importFrom(golem,bundle_resources)
