@@ -33,17 +33,17 @@ mod_lab_management_server <- function(id, r) {
             br(),
             tabsetPanel(id = "tabs", type = "tabs",
                         tabPanel("Kolumner", id = "cols-tab",
-                                 br(),
-                                 mod_cols_conf_ui("cols_conf_1"),
-                                 ),
+                                 wellPanel(
+                                   mod_cols_conf_ui("cols_conf_1"),
+                                 )),
                         tabPanel("Provberedning", id = "provprep-tab",
-                                 br(),
-                                 mod_order_spec_conf_ui("order_spec_conf_1"),
-                                 ),
+                                 wellPanel(
+                                   mod_order_spec_conf_ui("order_spec_conf_1"),
+                                 )),
                         tabPanel("Export", id = "export-tab",
-                                 br(),
-                                 mod_export_ui("export_1")
-                                 )
+                                 wellPanel(
+                                   mod_export_ui("export_1")
+                                 ))
                         )
           )
         }))

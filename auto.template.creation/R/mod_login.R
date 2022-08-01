@@ -63,10 +63,8 @@ mod_login_server <- function(id, r) {
                 ),
                 {
                   if (perm == "lab-user") {
-                    r$projects <- load_projects()
                     mod_lab_management_ui("lab_management_1")
                   } else if (perm == "project-manager") {
-                    r$projects <- load_projects()
                     mod_project_management_ui("project_management_1")
                   } else if (perm == "user-admin") {
                     mod_user_management_ui("user_management_1")

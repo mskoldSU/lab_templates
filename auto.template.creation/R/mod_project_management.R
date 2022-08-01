@@ -12,15 +12,17 @@ mod_project_management_ui <- function(id) {
   tagList(
     tabsetPanel(id = "tabs", type = "tabs",
                 tabPanel("Projects", id = "projects-tab",
+                         wellPanel(
                          br(),
                          actionButton(inputId = ns("create_new_project"), label = "Create New Project"),
                          div(
                            DT::DTOutput(outputId = ns("projects_table")),
                            style = "font-family: monospace;"
-                         )),
+                         ))),
                 tabPanel("Project Information", id = "project-information-tab",
-                         uiOutput(outputId = ns("project_body"))
-                         )
+                         wellPanel(
+                           uiOutput(outputId = ns("project_body"))
+                         ))
                 )
   )
 }
@@ -60,21 +62,46 @@ mod_project_management_server <- function(id, r) {
       } else {
         output$project_body <- renderUI(isolate({
           tagList(
-            actionButton(inputId = ns("select_another_project"), label = "Select Another Project"),
-            br(),
-            br(),
+            div(
+              actionButton(inputId = ns("select_another_project"), label = "Select Another Project"),
+              style = "margin: 10px 0px 10px 0px"
+            ),
             tabsetPanel(id = "tabs2", type = "tabs",
                 tabPanel("Analyser", id = "analyzes-tab",
-                         p("En rad för varje analyspaket/rapportmall, innehåller diverse meta-data som återfinns i rapportmallens flik \"general info\""),
+                         wellPanel(
+                         p("En rad för varje analyspaket/rapportmall, innehåller diverse meta-data som återfinns i rapportmallens flik \"general info\"."),
+                         fileInput(inputId = ns("analyzes_file"), label = "Upload (and override) Analyzes", multiple = FALSE,
+                                   accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
+                           h4("Analyzes"),
+                           DT::DTOutput(outputId = ns("analyzes_file"))
+                         )
                          ),
                 tabPanel("Prover", id = "samples-tab",
+                         wellPanel(
                          p("En rad för varje kombination av art, lokal och varje analystyp som förekommer i tabellen Analyser."),
+                         fileInput(inputId = ns("samples_file"), label = "Upload (and override) Samples", multiple = FALSE,
+                                   accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
+                           h4("Samples"),
+                           DT::DTOutput(outputId = ns("samples_file"))
+                         )
                          ),
                 tabPanel("Matriser", id = "matrices-tab",
-                         p("En tabell över matriser (kombinationer av Art och Organ)"),
+                         wellPanel(
+                         p("En tabell över matriser (kombinationer av Art och Organ)."),
+                         fileInput(inputId = ns("matrices_file"), label = "Upload (and override) Matrices", multiple = FALSE,
+                                   accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
+                           h4("Matrices"),
+                           DT::DTOutput(outputId = ns("matrices_file"))
+                         )
                          ),
                 tabPanel("Parametrar", id = "parameters-tab",
+                         wellPanel(
                          p("Alla parametrar som skall rapporteras för respektive Analystyp och deras mätenhet."),
+                         fileInput(inputId = ns("parameters_file"), label = "Upload (and override) Parameters", multiple = FALSE,
+                                   accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
+                           h4("Parameters"),
+                           DT::DTOutput(outputId = ns("parameters_file"))
+                         )
                          )
                 )
           )
@@ -102,6 +129,18 @@ mod_project_management_server <- function(id, r) {
         showNotification("Only project_names and project_manager are editable.", type = "message")
       }
       renderProjectsDT()
+    })
+
+    observeEvent(input$analyzes_file, {
+    })
+
+    observeEvent(input$samples_file, {
+    })
+
+    observeEvent(input$matrices_file, {
+    })
+
+    observeEvent(input$parametecs_file, {
     })
   })
 
