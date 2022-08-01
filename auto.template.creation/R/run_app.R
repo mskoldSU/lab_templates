@@ -15,8 +15,8 @@ run_app <- function(
   ...
 ) {
   credentials <<- load_credentials()
-  print("Could not find a credentials database, created a new user 'user-admin'")
   if (is.null(credentials)) {
+    print("Could not find a credentials database, created a new user 'user-admin'")
     credentials <<- data.frame(
       username   =        c("user-admin"),
       password   = sapply(c("user-admin"), sodium::password_store),

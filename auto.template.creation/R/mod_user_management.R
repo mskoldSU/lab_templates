@@ -25,6 +25,8 @@ mod_user_management_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    last_rendered_user_table <- reactiveVal(NULL)
+
     updateUserDT <- function() {
       output$user_table <- DT::renderDT(
                                  editable = list(target = "cell"),
@@ -37,6 +39,8 @@ mod_user_management_server <- function(id, r) {
                                    c
                                  }
                                )
+
+      last_rendered_user_table(credentials)
     }
 
     observeEvent(input$add_user, {
@@ -54,6 +58,11 @@ mod_user_management_server <- function(id, r) {
     })
 
     observeEvent(input$user_table_cell_edit, {
+      if (!all(last_rendered_user_table() == credentials)) {
+        showNotification("The user-table has been edited since it was renedered. Your attempted edit was discarded and your table has been updated.", type = "message")
+        updateUserDT()
+        return()
+      }
       row  <- input$user_table_cell_edit$row
       col <- input$user_table_cell_edit$col
 
@@ -84,9 +93,9 @@ mod_user_management_server <- function(id, r) {
     updateUserDT()
   })
 }
-    
+
 ## To be copied in the UI
 # mod_user_management_ui("user_management_1")
-    
+
 ## To be copied in the server
 # mod_user_management_server("user_management_1")

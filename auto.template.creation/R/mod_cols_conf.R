@@ -19,15 +19,18 @@ mod_cols_conf_ui <- function(id){
     )
   )
 }
-    
+
 #' cols_conf Server Functions
 #'
 #' @noRd
-mod_cols_conf_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_cols_conf_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    r$cols_df <- NULL
+    observe({
+      req(r$selected_project_id)
+      r$cols_df <- NULL
+    })
 
     update_main_df <- function() {
       output$input_table <- DT::renderDT(options = list(scrollX = TRUE, pageLength = 25), {
@@ -57,12 +60,11 @@ mod_cols_conf_server <- function(id, r){
     observeEvent(input$sheet_selector_select, {
       update_main_df()
     })
-
   })
 }
-    
+
 ## To be copied in the UI
 # mod_cols_conf_ui("cols_conf_1")
-    
+
 ## To be copied in the server
 # mod_cols_conf_server("cols_conf_1")

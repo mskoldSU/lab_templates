@@ -17,6 +17,11 @@ app_server <- function(input, output, session) {
   # r$order_start_accnr_df
   # r$order_start_provid_df
   # r$all_export_df
+  # r$user
+  # r$selected_project_id
+  # r$projects
+  r$selected_project_id <- NULL
+  r$user <- list(login = FALSE, username = NULL)
 
   mod_login_server("login_1", r = r)
 }

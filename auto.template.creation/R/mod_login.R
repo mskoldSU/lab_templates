@@ -13,15 +13,13 @@ mod_login_ui <- function(id){
     uiOutput(outputId = ns("body"))
   )
 }
-    
+
 #' login Server Functions
 #'
 #' @noRd 
 mod_login_server <- function(id, r) {
   moduleServer( id, function(input, output, session) {
     ns <- session$ns
-
-    USER <- reactiveValues(login = FALSE)
 
     loginpage <- div(id = "loginpage", style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
                      wellPanel(
@@ -46,7 +44,7 @@ mod_login_server <- function(id, r) {
     output$body <- renderUI(loginpage)
 
     observeEvent(input$login, {
-      if (USER$login == FALSE) {
+      if (r$user$login == FALSE) {
         Username <- isolate(input$user_name)
         Password <- isolate(input$passwd)
         user_index <- which(credentials$username==Username)
@@ -55,7 +53,8 @@ mod_login_server <- function(id, r) {
           pasverify <- sodium::password_verify(pasmatch, Password)
           perm <- credentials["permission"][user_index,]
           if (pasverify) {
-            USER$login <- TRUE
+            r$user$login <- TRUE
+            r$user$username <- Username
             output$body <- renderUI(isolate({
               tagList(
                 span(
@@ -64,8 +63,10 @@ mod_login_server <- function(id, r) {
                 ),
                 {
                   if (perm == "lab-user") {
+                    r$projects <- load_projects()
                     mod_lab_management_ui("lab_management_1")
                   } else if (perm == "project-manager") {
+                    r$projects <- load_projects()
                     mod_project_management_ui("project_management_1")
                   } else if (perm == "user-admin") {
                     mod_user_management_ui("user_management_1")
