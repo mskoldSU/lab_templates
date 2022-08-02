@@ -29,16 +29,15 @@ mod_lab_management_server <- function(id, r) {
       } else {
         output$body <- renderUI(isolate({
           tagList(
-            actionButton(inputId = ns("select_another_project"), label = "Select Another Project"),
+            div(
+              actionButton(inputId = ns("select_another_project"), label = "Select Another Project"),
+              style = "margin: 10px 0px 10px 0px"
+            ),
             br(),
             tabsetPanel(id = "tabs", type = "tabs",
-                        tabPanel("Kolumner", id = "cols-tab",
-                                 wellPanel(
-                                   mod_cols_conf_ui("cols_conf_1"),
-                                 )),
                         tabPanel("Provberedning", id = "provprep-tab",
                                  wellPanel(
-                                   mod_order_spec_conf_ui("order_spec_conf_1"),
+                                   mod_samples_preparation_ui("samples_preparation_1")
                                  )),
                         tabPanel("Export", id = "export-tab",
                                  wellPanel(
@@ -57,8 +56,7 @@ mod_lab_management_server <- function(id, r) {
   })
 
   mod_project_selector_server("project_selector_1", r = r)
-  mod_cols_conf_server("cols_conf_1", r = r)
-  mod_order_spec_conf_server("order_spec_conf_1", r = r)
+  mod_samples_preparation_server("samples_preparation_1", r = r)
   mod_export_server("export_1", r = r)
 }
     

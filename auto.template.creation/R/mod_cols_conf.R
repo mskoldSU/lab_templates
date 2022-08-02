@@ -45,7 +45,7 @@ mod_cols_conf_server <- function(id, r) {
 
       for (head in required_headers) {
         if (!(head %in% colnames(cols_df))) {
-          showNotification(paste0("Table is missing '", head, "' header. Expecting headers: '", paste(required_headers, collapse = "', '"), "'."), type="error")
+          showNotification(paste0("Table is missing '", head, "' header. Expecting headers: '", paste(required_headers, collapse = "', '"), "'."), type = "error")
           return()
         }
       }

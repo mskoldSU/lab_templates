@@ -47,7 +47,6 @@ mod_project_selector_server <- function(id, r) {
 
       r$selected_project_id <- r$projects$project_id[input$projects_table_rows_selected]
       r$selected_project_dfs <- load_project(r$projects$database[r$projects$project_id == r$selected_project_id])
-      print(r$selected_project_dfs)
     })
   })
 }

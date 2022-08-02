@@ -164,10 +164,10 @@ ensure_project_tables_exists <- function(project_database) {
     message(paste0("Creating 'analyser' table in project: ", project_database))
     query <- sprintf(
 "CREATE TABLE `%s` (
-  `analys_typ` TEXT,
+  `analystyp` TEXT,
   `labb` TEXT,
   `utforarlabb` TEXT,
-  `provtillstans` TEXT,
+  `provtillstand` TEXT,
   `provberedning` TEXT,
   `forvaringskarl` TEXT,
   `analys_metod` TEXT,
@@ -183,10 +183,10 @@ ensure_project_tables_exists <- function(project_database) {
     message(paste0("Creating 'prover' table in project: ", project_database))
     query <- sprintf(
 "CREATE TABLE `%s` (
-  `analys_typ` TEXT,
+  `analystyp` TEXT,
   `art` TEXT,
   `lokal` TEXT,
-  `individer_per_prov` TEXT
+  `individer_per_prov` INT
 );", projects_table_samples)
     table <- dbExecute(db, query)
   }
@@ -198,7 +198,7 @@ ensure_project_tables_exists <- function(project_database) {
     message(paste0("Creating 'matriser' table in project: ", project_database))
     query <- sprintf(
 "CREATE TABLE `%s` (
-  `analys_typ` TEXT,
+  `analystyp` TEXT,
   `art` TEXT,
   `organ` TEXT
 );", projects_table_matrices)
@@ -212,7 +212,7 @@ ensure_project_tables_exists <- function(project_database) {
     message(paste0("Creating 'parametrar' table in project: ", project_database))
     query <- sprintf(
 "CREATE TABLE `%s` (
-  `analys_typ` TEXT,
+  `analystyp` TEXT,
   `parameternamn` TEXT,
   `matenhet` TEXT
 );", projects_table_parameters)
@@ -249,4 +249,29 @@ load_project <- function(database_file) {
   list(analyzes = analyzes, samples = samples, matrices = matrices, parameters = parameters)
 }
 
-## TODO: Function to validate a project table contains the correct column, and then insert/override that table, or if not, return the missing columns
+#' load_spreadsheet_to_project
+#'
+#' @description Load a spreadsheet (csv or excel)
+#'
+#' @return Nothing
+#'
+#' @noRd
+#'
+#' @importFrom RSQLite SQLite
+#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbWriteTable
+load_spreadsheet_to_project <- function(database_file, table, expected_columns, raw_data) {
+    ensure_project_tables_exists(database_file)
+    db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
+    remove_old_table <- sprintf("DELETE FROM %s;", table)
+    dbExecute(db, remove_old_table)
+
+    insert_query <- sprintf("INSERT INTO %s (%s) VALUES (%s);",
+                            table,
+                            paste(expected_columns, collapse = ", "),
+                            paste(paste0(apply(raw_data, 1, function(r) { paste0("'", paste(r, collapse = "', '"), "'")})), collapse = "), ("))
+    dbExecute(db, insert_query)
+
+    dbDisconnect(db)
+
+    c()
+}
