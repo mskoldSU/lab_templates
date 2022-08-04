@@ -51,6 +51,9 @@ mod_lab_management_server <- function(id, r) {
 
     observeEvent(input$select_another_project, {
       r$selected_project_id <- NULL
+
+      ## This is read by JS in custom_js.js and updates the variable show_order_spec in the client
+      session$sendCustomMessage("show_hide_order_spec", FALSE);
     })
 
   })

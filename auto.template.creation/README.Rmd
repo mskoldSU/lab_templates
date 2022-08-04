@@ -20,6 +20,13 @@ knitr::opts_chunk$set(
 
 The goal of auto.template.creation is to ...
 
+## Modules
+
+* Module 1
+ - Desc
+* Module 2
+ - Desc
+
 ## Installation
 
 You can install the development version of auto.template.creation from [GitHub](https://github.com/) with:

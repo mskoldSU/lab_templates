@@ -25,6 +25,42 @@ accnr_add <- function(start_accnr, amount) {
   return(list(accnr = paste0(parts[1], "/", left_pad(new_nr, 5))))
 }
 
+accnr_min <- function(accnrs, offsets = 0) {
+  ## AccNR on the form 'A2022/00245'
+  ## This function assumes that all accnrs has the same year
+  if (length(accnrs) == 0 || any(is.na(accnrs) | accnrs == "")) {
+    return("")
+  }
+  partss <- strsplit(accnrs, "/")
+  m_value <- min(unlist(lapply(partss, {
+    function(parts) {
+      nr_str <- left_pad(parts[2], 5)
+      nr <- as.numeric(nr_str)
+      nr
+    }
+  })) + offsets)
+
+  paste0(partss[[1]][1], "/", left_pad(m_value, 5))
+}
+
+accnr_max <- function(accnrs, offsets = 0) {
+  ## AccNR on the form 'A2022/00245'
+  ## This function assumes that all accnrs has the same year
+  if (length(accnrs) == 0 || any(is.na(accnrs) | accnrs == "")) {
+    return("")
+  }
+  partss <- strsplit(accnrs, "/")
+  m_value <- max(unlist(lapply(partss, {
+    function(parts) {
+      nr_str <- left_pad(parts[2], 5)
+      nr <- as.numeric(nr_str)
+      nr
+    }
+  })) + offsets)
+
+  paste0(partss[[1]][1], "/", left_pad(m_value, 5))
+}
+
 valid_accnr <- function(accnr) {
   str_detect(accnr, "^[A-Za-z]([\\d]{2}|[\\d]{4})/[\\d]{5}$")
 }

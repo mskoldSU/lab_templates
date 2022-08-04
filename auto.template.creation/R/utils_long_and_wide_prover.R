@@ -22,6 +22,9 @@ long_to_wide_prover <- function(prover_lf) {
     }
   }
 
+
+  wf_non_uniform <- data.frame(wf)
+
   for (row in rownames(prover_lf)) {
     for (wrow in rownames(wf)) {
       if (prover_lf[row, "art"] == wf[wrow, "art"] && prover_lf[row, "lokal"] == wf[wrow, "lokal"]) {
@@ -30,15 +33,22 @@ long_to_wide_prover <- function(prover_lf) {
         if (!(prover_lf[row, "analystyp"] %in% colnames(wf))) {
           wf[, col] <- rep(0, nrow(wf))
           wf[, col_hom] <- rep(0, nrow(wf))
+          wf_non_uniform[, col_hom] <- rep(FALSE, nrow(wf_non_uniform))
         }
         wf[wrow, col] <- wf[wrow, col] + 1
+        if (wf[wrow, col_hom] != 0 && wf[wrow, col_hom] != prover_lf[row, "individer_per_prov"]) {
+          wf_non_uniform[wrow, col_hom] <- TRUE
+        }
         wf[wrow, col_hom] <- max(wf[wrow, col_hom], prover_lf[row, "individer_per_prov"])
         break
       }
     }
   }
 
-  wf
+  wf <- wf[,c(1:2, order(colnames(wf[,-1:-2])) + 2)]
+  wf_non_uniform <- wf_non_uniform[,c(1:2, order(colnames(wf_non_uniform[,-1:-2])) + 2)]
+
+  list(wide = wf, non_uniform = wf_non_uniform)
 }
 
 #' wide_to_long_prover
@@ -72,4 +82,30 @@ wide_to_long_prover <- function(prover_wf) {
   }
 
   lf
+}
+
+#' merge_wide
+#'
+#' @description A utils function
+#'
+#' @return The return value, if any, from executing the utility.
+#'
+#' @noRd
+merge_wide <- function(wide, non_uniform = NULL) {
+  colns <- colnames(wide)[3:ncol(wide)]
+  col_nor <- colns[!endsWith(colns, "_hom")]
+
+  wide_merged <- data.frame(art = wide[, "art"], lokal = wide[, "lokal"])
+  for (nor in col_nor) {
+    hom <- paste0(nor, "_hom")
+    wide_merged[, nor] <- paste0(
+      wide[, nor],
+      " * [",
+      if (!is.null(non_uniform)) sapply(non_uniform[, hom], function(x) { if (x) "~" else "" }) else "",
+      wide[, hom],
+      "]")
+    wide_merged[wide[, nor] == 0, nor] <- ""
+  }
+
+  wide_merged
 }

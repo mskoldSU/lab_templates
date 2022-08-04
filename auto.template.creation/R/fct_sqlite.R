@@ -183,10 +183,14 @@ ensure_project_tables_exists <- function(project_database) {
     message(paste0("Creating 'prover' table in project: ", project_database))
     query <- sprintf(
 "CREATE TABLE `%s` (
+  `ind` INT NOT NULL,
   `analystyp` TEXT,
   `art` TEXT,
   `lokal` TEXT,
-  `individer_per_prov` INT
+  `individer_per_prov` INT,
+  `accnr` TEXT,
+  `provid` TEXT,
+  PRIMARY KEY(ind)
 );", projects_table_samples)
     table <- dbExecute(db, query)
   }
@@ -249,21 +253,27 @@ load_project <- function(database_file) {
   list(analyzes = analyzes, samples = samples, matrices = matrices, parameters = parameters)
 }
 
-#' load_spreadsheet_to_project
+#' upload_data_to_project_table
 #'
-#' @description Load a spreadsheet (csv or excel)
+#' @description Override a projcet table
 #'
 #' @return Nothing
 #'
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbWriteTable
-load_spreadsheet_to_project <- function(database_file, table, expected_columns, raw_data) {
+#' @importFrom DBI dbConnect dbExecute dbDisconnect
+upload_data_to_project_table <- function(database_file, table, expected_columns, raw_data) {
     ensure_project_tables_exists(database_file)
     db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
     remove_old_table <- sprintf("DELETE FROM %s;", table)
     dbExecute(db, remove_old_table)
+
+    if (nrow(raw_data) >= 1000) {
+      warning("The data might need to be split up into multiple SQLite INSERT statements.")
+    }
+
+    raw_data[is.na(raw_data)] <- ""
 
     insert_query <- sprintf("INSERT INTO %s (%s) VALUES (%s);",
                             table,
@@ -274,4 +284,110 @@ load_spreadsheet_to_project <- function(database_file, table, expected_columns, 
     dbDisconnect(db)
 
     c()
+}
+
+#' update_accnrs_and_provids
+#'
+#' @description Update accnr and provid for certain indexes
+#'
+#' @return Nothing
+#'
+#' @noRd
+#'
+#' @importFrom RSQLite SQLite
+#' @importFrom DBI dbConnect dbExecute dbDisconnect
+update_accnrs_and_provids <- function(database_file, indexes, accnrs, provids) {
+  ensure_project_tables_exists(database_file)
+
+  if (length(indexes) != length(accnrs) || length(accnrs) != length(provids)) {
+    warning("indexes, accnrs and provids must be the same length")
+    return()
+  }
+
+  db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
+
+  accnrs[is.na(accnrs)] <- ""
+  provids[is.na(provids)] <- ""
+
+  for (i in seq_len(length(indexes))) {
+    query <- sprintf("UPDATE %s SET accnr = '%s', provid = '%s' WHERE ind = %s;",
+                     projects_table_samples,
+                     accnrs[i],
+                     provids[i],
+                     indexes[i])
+    dbExecute(db, query)
+  }
+
+  dbDisconnect(db)
+}
+
+#' insert_sample_entry
+#'
+#' @description Add a new entry
+#'
+#' @return Nothing
+#'
+#' @noRd
+#'
+#' @importFrom RSQLite SQLite
+#' @importFrom DBI dbConnect dbExecute dbDisconnect
+insert_sample_entry <- function(database_file, index, analystyp, art, lokal, individer_per_prov) {
+  ensure_project_tables_exists(database_file)
+
+  db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
+
+  query <- sprintf("INSERT INTO %s (%s) VALUES ('%s');",
+                   projects_table_samples,
+                   "ind, analystyp, art, lokal, individer_per_prov",
+                   paste0(c(index, analystyp, art, lokal, individer_per_prov), collapse = "', '"))
+  dbExecute(db, query)
+
+  dbDisconnect(db)
+}
+
+#' update_individer_per_prov
+#'
+#' @description Change the 'individer_per_prov' column for an index
+#'
+#' @return Nothing
+#'
+#' @noRd
+#'
+#' @importFrom RSQLite SQLite
+#' @importFrom DBI dbConnect dbExecute dbDisconnect
+update_individer_per_prov <- function(database_file, index, individer_per_prov) {
+  ensure_project_tables_exists(database_file)
+
+  db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
+
+  query <- sprintf("UPDATE %s SET individer_per_prov = %s WHERE ind = %s;",
+                   projects_table_samples,
+                   individer_per_prov,
+                   index)
+  dbExecute(db, query)
+
+  dbDisconnect(db)
+}
+
+#' delete_sample_row
+#'
+#' @description Delete a row from sample
+#'
+#' @return Nothing
+#'
+#' @noRd
+#'
+#' @importFrom RSQLite SQLite
+#' @importFrom DBI dbConnect dbExecute dbDisconnect
+delete_sample_row <- function(database_file, index) {
+  ensure_project_tables_exists(database_file)
+
+  db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))
+
+  query <- sprintf("DELETE FROM %s WHERE ind = %s;",
+                   projects_table_samples,
+                   index)
+  dbExecute(db, query)
+
+  dbDisconnect(db)
 }

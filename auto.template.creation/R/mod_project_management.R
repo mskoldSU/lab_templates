@@ -163,7 +163,7 @@ mod_project_management_server <- function(id, r) {
         return()
       }
 
-      load_spreadsheet_to_project(
+      upload_data_to_project_table(
         r$projects$database[r$projects$project_id == r$selected_project_id],
         projects_table_analyzes,
         expected_columns,
@@ -174,6 +174,8 @@ mod_project_management_server <- function(id, r) {
     observe({
       req(r$selected_project_dfs)
       req(r$selected_project_dfs$samples)
+      req(nrow(r$selected_project_dfs$samples) > 0)
+      req(r$wide_merged)
 
       if (nrow(r$selected_project_dfs$samples) == 0) {
         return()
@@ -185,17 +187,7 @@ mod_project_management_server <- function(id, r) {
                                        if (input$long_format) {
                                          r$selected_project_dfs$samples
                                        } else {
-                                         wide <- long_to_wide_prover(r$selected_project_dfs$samples)
-                                         colns <- colnames(wide)[3:ncol(wide)]
-                                         col_nor <- colns[!endsWith(colns, "_hom")]
-
-                                         wide_merged <- data.frame(art = wide[, "art"], lokal = wide[, "lokal"])
-                                         for (nor in col_nor) {
-                                           wide_merged[, nor] <- paste0(wide[, nor], " * [", wide[, paste0(nor, "_hom")], "]")
-                                           wide_merged[wide[, nor] == 0, nor] <- ""
-                                         }
-
-                                         wide_merged
+                                         r$wide_merged
                                        }
                                      })
     })
@@ -244,10 +236,15 @@ mod_project_management_server <- function(id, r) {
       }
 
       longf <- wide_to_long_prover(raw_data)
+      print(1)
+      print(longf)
+      longf <- cbind(ind = seq_len(nrow(longf)), longf)
+      print(2)
+      print(longf)
 
-      expected_columns <- c("analystyp", "art", "lokal", "individer_per_prov")
+      expected_columns <- c("ind", "analystyp", "art", "lokal", "individer_per_prov")
 
-      load_spreadsheet_to_project(
+      upload_data_to_project_table(
         r$projects$database[r$projects$project_id == r$selected_project_id],
         projects_table_samples,
         expected_columns,
@@ -258,10 +255,7 @@ mod_project_management_server <- function(id, r) {
     observe({
       req(r$selected_project_dfs)
       req(r$selected_project_dfs$matrices)
-
-      if (nrow(r$selected_project_dfs$matrices) == 0) {
-        return()
-      }
+      req(nrow(r$selected_project_dfs$matrices) > 0)
 
       output$matrices_table <- DT::renderDT(
                                      options = list(paging = FALSE, scrollX = TRUE),
@@ -286,7 +280,7 @@ mod_project_management_server <- function(id, r) {
         return()
       }
 
-      load_spreadsheet_to_project(
+      upload_data_to_project_table(
         r$projects$database[r$projects$project_id == r$selected_project_id],
         projects_table_matrices,
         expected_columns,
@@ -325,7 +319,7 @@ mod_project_management_server <- function(id, r) {
         return()
       }
 
-      load_spreadsheet_to_project(
+      upload_data_to_project_table(
         r$projects$database[r$projects$project_id == r$selected_project_id],
         projects_table_parameters,
         expected_columns,
