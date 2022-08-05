@@ -6,7 +6,45 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of auto.template.creation is to …
+The goal of auto.template.creation is to automate the process of
+generating analytics-lab ready templates with set AccNR and ProvID.
+
+## Modules and Structure
+
+### Modules
+
+-   login
+-   user_management
+-   project_management
+-   lab_management
+-   project_selector
+-   samples_preparation
+-   set_accnr_and_provid
+-   export
+
+### Functions
+
+-   generate_template
+-   sqlite
+
+### Utils
+
+-   long_and_wide_prover
+-   accnr_helpers
+-   provid_helpers
+
+### Structure
+
+    ui/server
+    └── login
+        ├── user_management
+        ├── project_management
+        │   └── project_selector
+        └── lab_management
+            ├── project_selector
+            ├── samples_preparation
+            │   └── set_accnr_and_provid
+            └── export
 
 ## Installation
 
@@ -18,38 +56,27 @@ You can install the development version of auto.template.creation from
 devtools::install_github("mskoldSU/lab_templates")
 ```
 
-## Example
+### Running development version
 
-This is a basic example which shows you how to solve a common problem:
+The server can be started for development using the run_dev.R script in
+the `/dev` folder.
 
-``` r
-library(auto.template.creation)
-## basic example code
+``` bash
+Rscript dev/run_dev.R
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+### Deploying
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+To deploy run
+
+``` bash
+Rscript dev/03_deploy.R
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
+## Build README
+
+You’ll need to render `README.Rmd` regularly, to keep `README.md`
 up-to-date. `devtools::build_readme()` is handy for this. You could also
 use GitHub Actions to re-render `README.Rmd` every time you push. An
 example workflow can be found here:
 <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
