@@ -41,6 +41,7 @@ The goal of auto.template.creation is to automate the process of generating anal
   #### More
   Text
   </details>
+
 * lab_management
 * project_selector
 * samples_preparation
