@@ -35,14 +35,16 @@ The goal of auto.template.creation is to automate the process of generating anal
 
       1. Analyzes
 
-      |analystyp|labb|utforarlabb|provtillstand|provberedning|forvaringskarl|analys_metod|analys_instrument|
+      |analystyp|labb|utforarlabb|provtillstand|provberedning|forvaringskarl|analys\_metod|analys\_instrument|
       |---------|---------|-----------|-------------|-------------|--------------|------------|-----------------|
       |Metall   |TestLabb |UtLabbTest |Bra kvalitet |Test2        |Bägare        |Test3       |Annat test       |
       |Metall   |TestLabb2|UtLabbTest2|Bra2kvalitet |Test4        |Bägare        |Test5       |Annat test 2     |
       
       2. Prover (wide)
+      
+      The `_hom` column contain the size of ecah homogenate. These can be individually edited by lab-users later if not only 49/50 samples were found and one of the homogenate must be decresed to 9.
 
-      |art   |lokal    |Metals     |Metals_hom|Hg |Hg_hom|SI |SI_hom|PCB|PCB_hom|CIC|CIC_hom|PBDE|PBDE_hom|HBCD|HBCD_hom|PFAS|PFAS_hom|Dioxin|Dioxin_hom|SI_för_dioxin|SI_för_dioxin_hom|PFAS_fiskar|PFAS_fiskar_hom|PAH|PAH_hom|Tinorganic|Tinorganic_hom|CLC|CLC_hom|BFR|BFR_hom|
+      |art   |lokal    |Metals     |Metals\_hom|Hg |Hg\_hom|SI |SI\_hom|PCB|PCB\_hom|CIC|CIC\_hom|PBDE|PBDE\_hom|HBCD|HBCD\_hom|PFAS|PFAS\_hom|Dioxin|Dioxin\_hom|SI\_för\_dioxin|SI\_för\_dioxin\_hom|PFAS\_fiskar|PFAS\_fiskar\_hom|PAH|PAH\_hom|Tinorganic|Tinorganic\_hom|CLC|CLC\_hom|BFR|BFR\_hom|
       |------|---------|-----------|----------|---|------|---|------|---|-------|---|-------|----|--------|----|--------|----|--------|------|----------|-------------|-----------------|-----------|---------------|---|-------|----------|--------------|---|-------|---|-------|
       |Blåmussla|Kvädöfjärden|10         |5         |10 |5     |10 |5     |5  |50     |5  |50     |5   |50      |5   |50      |    |        |      |          |             |                 |           |               |   |75     |          |              |   |       |   |       |
       |Blåmussla|Nidingen |15         |          |15 |      |15 |      |5  |20     |5  |20     |5   |20      |5   |20      |    |        |      |          |             |                 |           |               |   |20     |          |              |   |       |   |       |

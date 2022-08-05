@@ -36,9 +36,12 @@ generating analytics-lab ready templates with set AccNR and ProvID.
         information on the tables can be found
         [here](https://github.com/mskoldSU/lab_templates/issues/4#issuecomment-1195653136).
         The table called ‘prover’ shall be uploaded in a wide format.
+
         <details>
         <summary>
+
         Short table examples
+
         </summary>
 
         1.  Analyzes
@@ -49,6 +52,11 @@ generating analytics-lab ready templates with set AccNR and ProvID.
         | Metall    | TestLabb2 | UtLabbTest2 | Bra2kvalitet  | Test4         | Bägare         | Test5        | Annat test 2      |
 
         2.  Prover (wide)
+
+        The `_hom` column contain the size of ecah homogenate. These can
+        be individually edited by lab-users later if not only 49/50
+        samples were found and one of the homogenate must be decresed to
+        9.
 
         | art         | lokal                 | Metals | Metals_hom | Hg  | Hg_hom | SI  | SI_hom | PCB | PCB_hom | CIC | CIC_hom | PBDE | PBDE_hom | HBCD | HBCD_hom | PFAS | PFAS_hom | Dioxin | Dioxin_hom | SI_för_dioxin | SI_för_dioxin_hom | PFAS_fiskar | PFAS_fiskar_hom | PAH | PAH_hom | Tinorganic | Tinorganic_hom | CLC | CLC_hom | BFR | BFR_hom |
         |-------------|-----------------------|--------|------------|-----|--------|-----|--------|-----|---------|-----|---------|------|----------|------|----------|------|----------|--------|------------|---------------|-------------------|-------------|-----------------|-----|---------|------------|----------------|-----|---------|-----|---------|
