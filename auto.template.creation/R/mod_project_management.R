@@ -6,7 +6,8 @@
 #'
 #' @noRd 
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList tabsetPanel tabPanel wellPanel br actionButton uiOutput
+#' @importFrom utils read.csv
 mod_project_management_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -69,7 +70,7 @@ mod_project_management_server <- function(id, r) {
             tabsetPanel(id = "tabs2", type = "tabs",
                 tabPanel("Analyser", id = "analyzes-tab",
                          wellPanel(
-                         p("En rad för varje analyspaket/rapportmall, innehåller diverse meta-data som återfinns i rapportmallens flik \"general info\"."),
+                         p("En rad for varje analyspaket/rapportmall, innehaller diverse meta-data som aterfinns i rapportmallens flik \"general info\"."),
                          fileInput(inputId = ns("analyzes_file"), label = "Upload (and override) Analyzes", multiple = FALSE,
                                    accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
                            h4("Analyzes"),
@@ -78,7 +79,7 @@ mod_project_management_server <- function(id, r) {
                          ),
                 tabPanel("Prover", id = "samples-tab",
                          wellPanel(
-                           p("En rad för varje kombination av art, lokal och varje analystyp som förekommer i tabellen Analyser."),
+                           p("En rad for varje kombination av art, lokal och varje analystyp som forekommer i tabellen Analyser."),
                            fileInput(inputId = ns("samples_file"), label = "Upload (and override) Samples", multiple = FALSE,
                                      accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
                            h4("Samples"),
@@ -88,7 +89,7 @@ mod_project_management_server <- function(id, r) {
                          ),
                 tabPanel("Matriser", id = "matrices-tab",
                          wellPanel(
-                         p("En tabell över matriser (kombinationer av Art och Organ)."),
+                         p("En tabell over matriser (kombinationer av Art och Organ)."),
                          fileInput(inputId = ns("matrices_file"), label = "Upload (and override) Matrices", multiple = FALSE,
                                    accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
                            h4("Matrices"),
@@ -97,7 +98,7 @@ mod_project_management_server <- function(id, r) {
                          ),
                 tabPanel("Parametrar", id = "parameters-tab",
                          wellPanel(
-                         p("Alla parametrar som skall rapporteras för respektive Analystyp och deras mätenhet."),
+                         p("Alla parametrar som skall rapporteras for respektive Analystyp och deras matenhet."),
                          fileInput(inputId = ns("parameters_file"), label = "Upload (and override) Parameters", multiple = FALSE,
                                    accept = c("text/csv", "text/comma-separated-values", ".csv", ".xlsx", ".xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
                            h4("Parameters"),

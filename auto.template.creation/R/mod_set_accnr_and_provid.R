@@ -6,7 +6,7 @@
 #'
 #' @noRd 
 #'
-#' @importFrom shiny NS tagList 
+#' @importFrom shiny NS tagList checkboxInput tags
 mod_set_accnr_and_provid_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -25,7 +25,6 @@ mod_set_accnr_and_provid_server <- function(id, r) {
     proxies <- reactiveValues()
     cell_edits <- reactiveValues()
     rendered_table <- reactiveValues()
-    last_cell_edit <- reactiveValues()
 
     observeEvent(input$accnr_start_change, {
       req(r$selected_project_dfs$samples)
@@ -371,14 +370,6 @@ mod_set_accnr_and_provid_server <- function(id, r) {
               }
 
               cell_edits[[id]] <- observeEvent(input[[paste0(id, "_cell_edit")]], {
-                ## NOTE (Elias): The observeEvent got called again with the last parameters when the DT was rendered again. Thus repeating the last action.
-                ## If the last action was to change the value it would be fine but if the last action was to set row: 2 to 0, and thus remove it. The next time
-                ## it will remove the new row: 2, since the input gives rows numbered 1 -> nrow and not the inds of the rows in the samples table.
-                if (!is.null(last_cell_edit[[id]]) && all(last_cell_edit[[id]] == input[[paste0(id, "_cell_edit")]])) {
-                  return()
-                }
-
-                last_cell_edit[[id]] <- input[[paste0(id, "_cell_edit")]]
                 row <- input[[paste0(id, "_cell_edit")]]$row
                 ind <- rendered_table[[id]][row, "INDEX"]
 
@@ -419,7 +410,11 @@ mod_set_accnr_and_provid_server <- function(id, r) {
                 }
 
                 updateDTs()
-              })
+              },
+              ## NOTE (Elias): This is used since if the user has already edited any table with id e.g. 'table1' the observeEvent would run when initialized, thus repeating the last action
+              ## which could remove the first line for example
+              ignoreInit = TRUE
+              )
             }
           } else {
             DT::replaceData(isolate(proxies[[id]]), df, resetPaging = FALSE)

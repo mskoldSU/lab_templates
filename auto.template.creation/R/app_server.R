@@ -8,16 +8,6 @@ app_server <- function(input, output, session) {
   # Your application server logic
   r <- reactiveValues()
 
-  # r$cols_df
-  # r$order_df
-  # r$order_df_merged
-  # r$order_df_col_nor
-  # r$order_df_col_hom
-  # r$order_start_accnr_df
-  # r$order_start_provid_df
-  # r$all_export_df
-
-
   # r$user -- A list containing 'username' (a string of the currently logged in user, or NULL) and 'login' (TRUE if user is logged in, otherwise FALSE)
   # r$selected_project_id -- The id of the currently selected project, otherwise NULL
   # r$selected_project_dfs -- A list containing four dataframes: 'analyzes', 'samples', 'matrices', and 'parameters'
@@ -34,6 +24,7 @@ app_server <- function(input, output, session) {
   observe({
     req(r$selected_project_dfs$samples)
     req(nrow(r$selected_project_dfs$samples) > 0)
+    print("what")
     w <- long_to_wide_prover(r$selected_project_dfs$samples)
     r$wide_merged <- merge_wide(w$wide, w$non_uniform)
   })

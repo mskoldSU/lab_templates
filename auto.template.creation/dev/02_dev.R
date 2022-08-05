@@ -38,11 +38,6 @@ golem::add_module(name = "samples_preparation", with_test = FALSE)
 golem::add_module(name = "set_accnr_and_provid", with_test = FALSE)
 golem::add_module(name = "export", with_test = FALSE)
 
-## Not used
-golem::add_module(name = "cols_conf", with_test = FALSE)
-golem::add_module(name = "order_spec_conf", with_test = FALSE)
-golem::add_module(name = "set_accnr", with_test = FALSE)
-
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 # golem::add_fct("helpers", with_test = TRUE)

@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList textOutput uiOutput
 mod_export_ui <- function(id) {
   ns <- NS(id)
   tagList(

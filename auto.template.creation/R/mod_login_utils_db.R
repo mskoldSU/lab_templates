@@ -1,4 +1,4 @@
-sqlitePath <- "./data/credentials.db"
+sqlitePath <- "./inst/extdata/credentials.db"
 table <- "credentials"
 
 #' save_credentials
@@ -10,7 +10,7 @@ table <- "credentials"
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbWriteTable
+#' @importFrom DBI dbConnect dbDisconnect dbWriteTable
 save_credentials <- function() {
   # Connect to the database
   db <- dbConnect(SQLite(), sqlitePath)

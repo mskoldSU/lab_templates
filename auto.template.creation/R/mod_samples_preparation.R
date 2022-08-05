@@ -6,7 +6,7 @@
 #'
 #' @noRd 
 #'
-#' @importFrom shiny NS tagList 
+#' @importFrom shiny NS tagList  conditionalPanel h4 actionButton textOutput br div
 mod_samples_preparation_ui <- function(id){
   ns <- NS(id)
   tagList(

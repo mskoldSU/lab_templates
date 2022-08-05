@@ -1,10 +1,10 @@
-credentials_sqlite_path <- "./data/credentials.db"
+credentials_sqlite_path <- "./inst/extdata/credentials.db"
 credentials_table <- "credentials"
 
-projects_sqlite_path <- "./data/projects.db"
+projects_sqlite_path <- "./inst/extdata/projects.db"
 projects_table <- "projects"
 
-projects_folder_sqlite_path <- "./data/projects/"
+projects_folder_sqlite_path <- "./inst/extdata/projects/"
 projects_table_analyzes <- "analyser"
 projects_table_samples <- "prover"
 projects_table_matrices <- "matriser"
@@ -19,7 +19,7 @@ projects_table_parameters <- "parametrar"
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbWriteTable
+#' @importFrom DBI dbConnect dbDisconnect dbWriteTable
 save_credentials <- function() {
   db <- dbConnect(SQLite(), credentials_sqlite_path)
   dbWriteTable(db, credentials_table, credentials, overwrite = TRUE)
@@ -57,7 +57,7 @@ load_credentials <- function() {
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbExecute dbDisconnect
+#' @importFrom DBI dbConnect dbExecute dbGetQuery dbDisconnect
 ensure_projects_table_exists <- function() {
   db <- dbConnect(SQLite(), projects_sqlite_path)
   query <- sprintf("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';", projects_table)
@@ -154,7 +154,7 @@ update_project <- function(project_id, col, data) {
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbExecute dbDisconnect
+#' @importFrom DBI dbConnect dbExecute dbGetQuery dbDisconnect
 ensure_project_tables_exists <- function(project_database) {
   db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, project_database))
   query <- "SELECT name FROM sqlite_master WHERE type='table' AND name='analyser';"
@@ -235,7 +235,7 @@ ensure_project_tables_exists <- function(project_database) {
 #' @noRd
 #'
 #' @importFrom RSQLite SQLite
-#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbWriteTable
+#' @importFrom DBI dbConnect dbGetQuery dbDisconnect
 load_project <- function(database_file) {
   ensure_project_tables_exists(database_file)
   db <- dbConnect(SQLite(), paste0(projects_folder_sqlite_path, database_file))

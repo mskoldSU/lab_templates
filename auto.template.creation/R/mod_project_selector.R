@@ -6,7 +6,7 @@
 #'
 #' @noRd 
 #'
-#' @importFrom shiny NS tagList 
+#' @importFrom shiny NS tagList  actionButton br
 mod_project_selector_ui <- function(id){
   ns <- NS(id)
   tagList(
