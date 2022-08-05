@@ -25,7 +25,7 @@ The goal of auto.template.creation is to automate the process of generating anal
 ### Modules
 
 * login
-** Test
+  - Subtest
 * user_management
 * project_management
 * lab_management
