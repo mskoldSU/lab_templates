@@ -40,8 +40,12 @@ generating analytics-lab ready templates with set AccNR and ProvID.
         <summary>
         Short table examples
         </summary>
-        \#### What Test \#### More Text
-        </details>
+
+### Prover (wide)
+
+Test \### Matrices Text
+</details>
+
 -   lab_management
 -   project_selector
 -   samples_preparation

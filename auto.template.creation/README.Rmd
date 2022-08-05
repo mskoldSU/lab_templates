@@ -33,10 +33,10 @@ The goal of auto.template.creation is to automate the process of generating anal
   <details>
       <summary>Short table examples</summary>
 
-        #### What
-        Test
-        #### More
-        Text
+### Prover (wide)
+Test
+### Matrices
+Text
   </details>
 
 * lab_management
