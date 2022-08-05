@@ -33,10 +33,45 @@ The goal of auto.template.creation is to automate the process of generating anal
   <details>
       <summary>Short table examples</summary>
 
-      ### Prover (wide)
-      Test
-      ### Matrices
-      Text
+      1. Analyzes
+      |analystyp|labb|utforarlabb|provtillstand|provberedning|forvaringskarl|analys_metod|analys_instrument|
+      |---------|---------|-----------|-------------|-------------|--------------|------------|-----------------|
+      |Metall   |TestLabb |UtLabbTest |Bra kvalitet |Test2        |Bägare        |Test3       |Annat test       |
+      |Metall   |TestLabb2|UtLabbTest2|Bra2kvalitet |Test4        |Bägare        |Test5       |Annat test 2     |
+      
+      2. Prover (wide)
+      |art   |lokal    |Metals     |Metals_hom|Hg |Hg_hom|SI |SI_hom|PCB|PCB_hom|CIC|CIC_hom|PBDE|PBDE_hom|HBCD|HBCD_hom|PFAS|PFAS_hom|Dioxin|Dioxin_hom|SI_för_dioxin|SI_för_dioxin_hom|PFAS_fiskar|PFAS_fiskar_hom|PAH|PAH_hom|Tinorganic|Tinorganic_hom|CLC|CLC_hom|BFR|BFR_hom|
+      |------|---------|-----------|----------|---|------|---|------|---|-------|---|-------|----|--------|----|--------|----|--------|------|----------|-------------|-----------------|-----------|---------------|---|-------|----------|--------------|---|-------|---|-------|
+      |Blåmussla|Kvädöfjärden|10         |5         |10 |5     |10 |5     |5  |50     |5  |50     |5   |50      |5   |50      |    |        |      |          |             |                 |           |               |   |75     |          |              |   |       |   |       |
+      |Blåmussla|Nidingen |15         |          |15 |      |15 |      |5  |20     |5  |20     |5   |20      |5   |20      |    |        |      |          |             |                 |           |               |   |20     |          |              |   |       |   |       |
+      |Blåmussla|Fjällbacka|15         |          |15 |      |15 |      |5  |20     |5  |20     |5   |20      |5   |20      |    |        |      |          |             |                 |           |               |   |20     |          |              |   |       |   |       |
+      |Sillgrissla|Stora Karlsö|10         |          |10 |      |10 |      |10 |       |10 |       |10  |        |10  |        |    |10      |      |10        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Fisktärna|Tjärnö   |           |10        |   |10    |   |10    |   |10     |   |10     |    |10      |    |10      |    |10      |      |10        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strandskata|Tjärnö   |           |10        |   |10    |   |10    |   |10     |   |10     |    |10      |    |10      |    |10      |      |10        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Aborre|Holmöarna|10         |          |10 |      |10 |      |2  |10     |2  |10     |2   |10      |2   |10      |2   |10      |      |10        |             |10               |           |10             |   |       |          |10            |   |       |   |       |
+      |Aborre|Örefjärden|2          |10        |2  |10    |2  |10    |2  |10     |2  |10     |2   |10      |2   |10      |    |        |      |10        |             |                 |           |               |   |       |          |10            |   |       |   |       |
+      |Aborre|Kvädofjärden|10         |          |10 |      |10 |      |10 |       |10 |       |10  |        |10  |        |2   |10      |      |10        |             |10               |           |10             |   |       |          |10            |   |       |   |       |
+      |Sill  |Rånefjärden|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Harufjärden|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Kinnbäcksfjärden|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Holmöarna|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Gaviksfjärden|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Långvindsfjärden|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Bottenh. Utsjö (51G9)|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Ängskärsklubb (vår)|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      |Strömming|Ängskärsklubb (höst)|2          |12        |2  |12    |2  |12    |2  |12     |2  |12     |2   |12      |2   |12      |2   |12      |2     |12        |             |                 |           |               |   |       |          |              |   |       |   |       |
+      3. Matrices
+      |analystyp|art      |organ      |
+      |---------|---------|-----------|
+      |Hg       |Blåmussla|Lever      |
+      |Metals   |Blåmussla|Muskel     |
+      |SI       |Blåmussla|Muskel     |
+
+      4. Parameters
+      |analystyp|parameternamn|matenhet   |
+      |---------|-------------|-----------|
+      |Metall   |SI           |g / kg     |
+
   </details>
 
 * lab_management
