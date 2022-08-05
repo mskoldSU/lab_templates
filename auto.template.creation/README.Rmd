@@ -32,10 +32,9 @@ The goal of auto.template.creation is to automate the process of generating anal
   - Is able to create new projects, enter meta-information such as project-name and manager. A tab with project-information contains four tables associated with the projects. More information on the tables can be found  [here](https://github.com/mskoldSU/lab_templates/issues/4#issuecomment-1195653136). The table called 'prover' shall be uploaded in a wide format.
   <details>
       <summary>Short table examples</summary>
-  
+
         #### What
         Test
-
         #### More
         Text
   </details>
