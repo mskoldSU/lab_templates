@@ -113,6 +113,7 @@ mod_project_management_server <- function(id, r) {
 
     observeEvent(input$select_another_project, {
       r$selected_project_id <- NULL
+      r$selected_project_dfs <- list(analyzes = NULL, samples = NULL, matrices = NULL, parameters = NULL)
     })
 
     observeEvent(input$create_new_project, {
@@ -191,6 +192,16 @@ mod_project_management_server <- function(id, r) {
                                          r$wide_merged
                                        }
                                      })
+    })
+
+    observe({
+      req(!is.null(input$long_format))
+
+      if (input$long_format) {
+        r$wide_merged_used <- FALSE
+      } else {
+        r$wide_merged_used <- TRUE
+      }
     })
 
     observeEvent(input$samples_file, {

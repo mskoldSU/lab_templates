@@ -369,7 +369,8 @@ mod_set_accnr_and_provid_server <- function(id, r) {
                 cell_edits[[id]]$destroy()
               }
 
-              cell_edits[[id]] <- observeEvent(input[[paste0(id, "_cell_edit")]], {
+              cell_edits[[id]] <- observeEvent(input[[paste0(id, "_cell_edit")]],
+              {
                 row <- input[[paste0(id, "_cell_edit")]]$row
                 ind <- rendered_table[[id]][row, "INDEX"]
 
@@ -475,6 +476,14 @@ mod_set_accnr_and_provid_server <- function(id, r) {
     }
 
     observeEvent(input$expand, {
+      if (input$expand) {
+        r$wide_merged_used <- FALSE
+      } else {
+        ## NOTE (Elias): We only need to recalculate this once. We know the wide format doesn't need to change while viewer the set_accnr_and_provid view
+        w <- long_to_wide_prover(r$selected_project_dfs$samples)
+        r$wide_merged <- merge_wide(w$wide, w$non_uniform)
+      }
+
       updateDTs()
     })
 

@@ -97,6 +97,7 @@ mod_samples_preparation_server <- function(id, r) {
         return()
       }
 
+
       save_selected(input$order_spec_table_cells_selected)
       selected_filtered <- input$order_spec_table_cells_selected
       selected_filtered[,2] <- selected_filtered[,2] + 1
@@ -104,11 +105,13 @@ mod_samples_preparation_server <- function(id, r) {
 
       ## This is read by JS in custom_js.js and updates the variable show_order_spec in the client
       session$sendCustomMessage("show_hide_order_spec", TRUE);
+      r$wide_merged_used <- FALSE
     })
 
     observeEvent(input$back_to_order_spec, {
       ## This is read by JS in custom_js.js and updates the variable show_order_spec in the client
       session$sendCustomMessage("show_hide_order_spec", FALSE);
+      r$wide_merged_used <- TRUE
     })
 
   })
