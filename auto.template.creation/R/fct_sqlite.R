@@ -391,3 +391,9 @@ delete_sample_row <- function(database_file, index) {
 
   dbDisconnect(db)
 }
+
+create_database_folder_structure <- function() {
+  dir.create("./inst")
+  dir.create("./inst/extdata")
+  dir.create("./inst/extdata/projects")
+}
