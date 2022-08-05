@@ -46,6 +46,8 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 
         1.  Analyzes
 
+        Metadata associated with a project.
+
         | analystyp | labb      | utforarlabb | provtillstand | provberedning | forvaringskarl | analys_metod | analys_instrument |
         |-----------|-----------|-------------|---------------|---------------|----------------|--------------|-------------------|
         | Metall    | TestLabb  | UtLabbTest  | Bra kvalitet  | Test2         | Bägare         | Test3        | Annat test        |
@@ -57,6 +59,9 @@ generating analytics-lab ready templates with set AccNR and ProvID.
         be individually edited by lab-users later if not only 49/50
         samples were found and one of the homogenate must be decresed to
         9.
+
+        WARNING! Uploading a new table will override all information
+        regarding AccNR and ProvID that has been entered.
 
         | art         | lokal                 | Metals | Metals_hom | Hg  | Hg_hom | SI  | SI_hom | PCB | PCB_hom | CIC | CIC_hom | PBDE | PBDE_hom | HBCD | HBCD_hom | PFAS | PFAS_hom | Dioxin | Dioxin_hom | SI_för_dioxin | SI_för_dioxin_hom | PFAS_fiskar | PFAS_fiskar_hom | PAH | PAH_hom | Tinorganic | Tinorganic_hom | CLC | CLC_hom | BFR | BFR_hom |
         |-------------|-----------------------|--------|------------|-----|--------|-----|--------|-----|---------|-----|---------|------|----------|------|----------|------|----------|--------|------------|---------------|-------------------|-------------|-----------------|-----|---------|------------|----------------|-----|---------|-----|---------|
@@ -81,6 +86,11 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 
         3.  Matrices
 
+        This table is critical to operation but allows the program to
+        show the lab-users entering AccNR and ProvID which Organ is
+        connected to certain combinations of species and types of
+        analyzes.
+
         | analystyp | art       | organ  |
         |-----------|-----------|--------|
         | Hg        | Blåmussla | Lever  |
@@ -89,15 +99,46 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 
         4.  Parameters
 
+        Used for the export and specifies which substances shall be
+        analyzed based on what type of analysis it is.
+
         | analystyp | parameternamn | matenhet |
         |-----------|---------------|----------|
         | Metall    | SI            | g / kg   |
 
     </details>
 -   lab_management
+    -   Allows the user to select a project (through the
+        `project_selector` and then shows the `samples_preparation` once
+        the selection has been made).
 -   project_selector
+    -   Allows the user to select a project. Lists all projects and
+        allows one to be selected. Upon seletion it will load the
+        relevant sqlite database into memory.
 -   samples_preparation
+    -   Shows all samples/prover in a wide format. Each cell has the
+        format `X * [(~)Y]`. It means there are `X` samples, each a
+        homogenate of size `Y`. If the `~` is present, it means the
+        homogenates are different sizes but the largest in the group is
+        `Y`. The user can select some cells and click `Set AccNR` to
+        enter AccNR and ProvID, and edit the sizes of the homogenates or
+        the number of samples.
 -   set_accnr_and_provid
+    -   Contains a checkbox called `expand`. If `expand` is not checked
+        it will allow the user to enter the first AccNR and ProvID for a
+        group of samples (same species and location). The app will
+        automatically assign sequent AccNR and ProvID for all samples in
+        the group. If multiple groups shall have the same AccNR for
+        example (e.g. multiple tests are to be done on the same
+        homogenates) the button `Copy AccNR from first to rest` can be
+        used. It it quite self-explanatory.
+    -   If `expand` is checked. It will show each sample in the group on
+        a separate row, the sizes of the homogenates can be edited by
+        double-clicking on it, a row (/sample) can be removed by setting
+        the homogenate size to `0` and a new row can be added by
+        clicking on `Add another entry for ${group}`. (OBS!) If rows are
+        added, removed or the homogenate sizes are edited all AccNR and
+        ProvID for that group will be cleared.
 -   export
     -   This module is not yet created. The idea for it is that it will
         gather all of the relevant information from the sqlite database
