@@ -13,7 +13,7 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 
 ### Modules
 
--   login
+-   login \*\* Test
 -   user_management
 -   project_management
 -   lab_management
@@ -33,7 +33,7 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 -   accnr_helpers
 -   provid_helpers
 
-### Structure
+### Module Structure
 
     ui/server
     └── login
