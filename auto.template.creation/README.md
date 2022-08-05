@@ -168,14 +168,21 @@ generating analytics-lab ready templates with set AccNR and ProvID.
             │   └── set_accnr_and_provid
             └── export
 
-## Installation
+## Install and Run
 
 You can install the development version of auto.template.creation from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/) and create the database folder structure
+with the function `create_database_folder_structure` with:
+
+The first time it will create a user called `user-admin`, with password
+`user-admin`, that has the role `user-adimn`.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("mskoldSU/lab_templates")
+devtools::install_github("mskoldSU/lab_templates", subdir = "auto.template.creation")
+library(auto.template.creation)
+create_database_folder_structure()
+run_app()
 ```
 
 ### Running development version

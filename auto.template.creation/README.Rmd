@@ -129,6 +129,8 @@ ui/server
 
 You can install the development version of auto.template.creation from [GitHub](https://github.com/) and create the database folder structure with the function `create_database_folder_structure` with:
 
+The first time it will create a user called `user-admin`, with password `user-admin`, that has the role `user-adimn`.
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("mskoldSU/lab_templates", subdir = "auto.template.creation")
