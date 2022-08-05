@@ -14,14 +14,61 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 ### Modules
 
 -   login
-    -   Subtest
+
+    -   Checks if user is logged in. If not, it will show a login screen
+        where the user can enter a username and password. When the
+        ‘login’ button is clicked it will check against a global
+        `credentials` data.frame. If the user entered correct
+        login-details it will render one of the management modules,
+        depending on what permission/user-type the login corresponded
+        to. It will also contain the logout button.
+
 -   user_management
+
+    -   An user admin that can create new users, delete users, and
+        change detals such as name, password and type/permission. To
+        edit an user, double-click on the cell and enter the new value.
+        The password will be shown as the hash (which is all that is
+        saved on the server), but the user will login with the cleartext
+        the admin entered. The username must be unique and an empty
+        username will delete the user.
+
 -   project_management
+
+    -   Is able to create new projects, enter meta-information such as
+        project-name and manager. A tab with project-information
+        contains four tables associated with the projects. More
+        information on the tables can be found
+        [here](https://github.com/mskoldSU/lab_templates/issues/4#issuecomment-1195653136).
+        The table called ‘prover’ shall be uploaded in a wide format.
+        <details>
+        <summary>
+        Short table examples
+        </summary>
+
+    #### What
+
+    Test
+
+    #### More
+
+    Text
+
+    </details>
+
 -   lab_management
+
 -   project_selector
+
 -   samples_preparation
+
 -   set_accnr_and_provid
+
 -   export
+
+    -   This module is not yet created. The idea for it is that it will
+        gather all of the relevant information from the sqlite database
+        and produce
 
 ### Functions
 
