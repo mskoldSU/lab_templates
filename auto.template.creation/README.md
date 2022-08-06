@@ -142,18 +142,45 @@ generating analytics-lab ready templates with set AccNR and ProvID.
 -   export
     -   This module is not yet created. The idea for it is that it will
         gather all of the relevant information from the sqlite database
-        and produce
+        and produce. OBS! The SQLite database does not save any accnr on
+        the homogenate format, these must be created with the helper
+        function in `accnr_helpers` utils.
 
 ### Functions
 
 -   generate_template
+    -   No current functionality, planned to house the export modules
+        data functions.
 -   sqlite
+    -   Holds various functions that reads and writes to the SQLite
+        database.
+        1.  Reads and writes entire table of credentials
+        2.  Reads table of projects. Inserts new projects and updates
+            information about existing project.
+        3.  Reads all four tables from project file. Overrides entire
+            table in project file. Functions to update accnr and provid
+            for sample table in project file, insert new sample, update
+            sample ‘individer_per_prov’ information, and detele sample.
+        4.  Initiate database folder structure used manually when
+            setting up project.
 
 ### Utils
 
 -   long_and_wide_prover
+    -   Functions to convert sample table between the wide format (that
+        the users enters in `project_management` and views in
+        `samples_preparation`) and the long format (that is saved in the
+        database, and viewed when `set_accnr_and_provid` is expanded).
 -   accnr_helpers
+    -   Functions to validate if string is accnr, increase accnr (add
+        number to accnr), create an accnr on the homogenate format
+        (e.g. `A2022/00001-000010`), get the minimum/maximum of multiple
+        accnr (this functions currently assumes the year are the same).
 -   provid_helpers
+    -   Functions to validate if string is provid and increase provid
+        (add number to provid). These funcions are currently the same as
+        the accnr functions, but were separated to allow different
+        validate functions and more flexability further on.
 
 ### Module Structure
 

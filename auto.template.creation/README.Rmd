@@ -99,16 +99,25 @@ The goal of auto.template.creation is to automate the process of generating anal
   - Contains a checkbox called `expand`. If `expand` is not checked it will allow the user to enter the first AccNR and ProvID for a group of samples (same species and location). The app will automatically assign sequent AccNR and ProvID for all samples in the group. If multiple groups shall have the same AccNR for example (e.g. multiple tests are to be done on the same homogenates) the button `Copy AccNR from first to rest` can be used. It it quite self-explanatory.
   - If `expand` is checked. It will show each sample in the group on a separate row, the sizes of the homogenates can be edited by double-clicking on it, a row (/sample) can be removed by setting the homogenate size to `0` and a new row can be added by clicking on `Add another entry for ${group}`. (OBS!) If rows are added, removed or the homogenate sizes are edited all AccNR and ProvID for that group will be cleared.
 * export
-  - This module is not yet created. The idea for it is that it will gather all of the relevant information from the sqlite database and produce
+  - This module is not yet created. The idea for it is that it will gather all of the relevant information from the sqlite database and produce. OBS! The SQLite database does not save any accnr on the homogenate format, these must be created with the helper function in `accnr_helpers` utils.
 
 ### Functions
 * generate_template
+  - No current functionality, planned to house the export modules data functions.
 * sqlite
+  - Holds various functions that reads and writes to the SQLite database. 
+    1. Reads and writes entire table of credentials
+    2. Reads table of projects. Inserts new projects and updates information about existing project.
+    3. Reads all four tables from project file. Overrides entire table in project file. Functions to update accnr and provid for sample table in project file, insert new sample, update sample 'individer\_per\_prov' information, and detele sample.
+    4. Initiate database folder structure used manually when setting up project.
 
 ### Utils
 * long\_and\_wide\_prover
+  - Functions to convert sample table between the wide format (that the users enters in `project_management` and views in `samples_preparation`) and the long format (that is saved in the database, and viewed when  `set_accnr_and_provid` is expanded).
 * accnr_helpers
+  - Functions to validate if string is accnr, increase accnr (add number to accnr), create an accnr on the homogenate format (e.g. `A2022/00001-000010`), get the minimum/maximum of multiple accnr (this functions currently assumes the year are the same).
 * provid_helpers
+  - Functions to validate if string is provid and increase provid (add number to provid). These funcions are currently the same as the accnr functions, but were separated to allow different validate functions and more flexability further on. 
 
 ### Module Structure
 
