@@ -18,7 +18,11 @@ Imports:
     sodium,
     stringr,
     utils,
-    uuid
+    uuid,
+    dplyr,
+    tidyr,
+    tidyselect,
+    listviewer
 Suggests: 
     covr,
     knitr,
