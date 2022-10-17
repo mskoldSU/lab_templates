@@ -23,6 +23,8 @@ app_server <- function(input, output, session) {
 
   r$wide_merged <- NULL
   r$wide_merged_used <- FALSE
+  
+  r$status <- NULL # Added by MS
 
   observe({
     req(r$selected_project_dfs$samples)
@@ -30,7 +32,8 @@ app_server <- function(input, output, session) {
     req(r$wide_merged_used == TRUE)
 
     w <- long_to_wide_prover(r$selected_project_dfs$samples)
-    r$wide_merged <- merge_wide(w$wide, w$non_uniform)
+    r$wide_merged <- w$wide_merged # merge_wide(w$wide, w$non_uniform)
+    r$status <- w$status
   })
 
   mod_login_server("login_1", r = r)
