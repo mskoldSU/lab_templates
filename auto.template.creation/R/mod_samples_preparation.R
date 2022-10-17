@@ -49,14 +49,19 @@ mod_samples_preparation_server <- function(id, r) {
 
     generate_order_spec_table <- function() {
       modified_order_df <- data.frame(r$wide_merged)
-
+      modified_status_df <- data.frame(r$status)
+      
       sheet_cols <- seq(3, ncol(modified_order_df))
       modified_order_df[,sheet_cols] <- lapply(sheet_cols, {
         function(col) {
           modified_order_df[modified_order_df[, col] != "", col] <- vapply(which(modified_order_df[, col] != ""), {
             function(row) {
-              fully_entered <- FALSE ##r$order_start_accnr_df[row, col] != "" && r$order_start_provid_df[row, col] != ""
-              as.character(div(modified_order_df[row, col], class= (if (fully_entered) "highlight" else "")))
+              fully_entered <- (r$status[row, col] == "finished") ##r$order_start_accnr_df[row, col] != "" && r$order_start_provid_df[row, col] != ""
+              partially_entered <- (r$status[row, col] == "started")
+              as.character(div(modified_order_df[row, col], class=  dplyr::case_when((r$status[row, col] == "finished") ~ "highlight1",
+                                                                              (r$status[row, col] == "started") ~ "highlight2",
+                                                                              TRUE ~ ""
+                                                                              )))  #(if (fully_entered) "highlight" else "")))
             }
           }, FUN.VALUE = "")
           modified_order_df[, col]
@@ -76,6 +81,7 @@ mod_samples_preparation_server <- function(id, r) {
                                        selection =
                                          list(target = "cell", selected = isolate(save_selected()), selectable = get_selectable_cells()),
                                        class = "nowrap",
+                                       options = list(pageLength = 50),
                                        df
                                      )
     })
