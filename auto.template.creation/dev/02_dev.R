@@ -20,26 +20,40 @@ attachment::att_amend_desc()
 ## Dependencies
 usethis::use_package("DT")
 usethis::use_package("magrittr")
+usethis::use_package("shinyjs")
+usethis::use_package("sodium")
+usethis::use_package("RSQLite")
+usethis::use_package("uuid")
 
 ## Add modules ----
 ## Create a module infrastructure in R/
 # golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
 # golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
-golem::add_module(name = "rows_conf", with_test = TRUE)
-golem::add_module(name = "cols_conf", with_test = TRUE)
-golem::add_module(name = "template_category_conf", with_test = TRUE)
+golem::add_module(name = "login", with_test = FALSE)
+golem::add_module(name = "user_management", with_test = FALSE)
+golem::add_module(name = "project_management", with_test = FALSE)
+golem::add_module(name = "lab_management", with_test = FALSE)
+golem::add_module(name = "project_selector", with_test = FALSE)
+golem::add_module(name = "samples_preparation", with_test = FALSE)
+golem::add_module(name = "set_accnr_and_provid", with_test = FALSE)
+golem::add_module(name = "export", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 # golem::add_fct("helpers", with_test = TRUE)
-golem::add_fct("generate_template", with_test = TRUE)
+golem::add_fct("generate_template", with_test = FALSE)
+golem::add_fct("sqlite", with_test = FALSE)
 # golem::add_utils("helpers", with_test = TRUE)
+golem::add_utils("long_and_wide_prover", with_test = FALSE)
+golem::add_utils("accnr_helpers", with_test = FALSE)
+golem::add_utils("provid_helpers", with_test = FALSE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
 # golem::add_js_file("script")
 # golem::add_js_handler("handlers")
-# golem::add_css_file("custom")
+golem::add_js_handler("custom_js")
+golem::add_css_file("custom_style")
 # golem::add_sass_file("custom")
 
 ## Add internal datasets ----

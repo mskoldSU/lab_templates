@@ -8,10 +8,14 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    # Init shinyjs
+    shinyjs::useShinyjs(),
     # Your application UI logic
     fluidPage(
-      titlePanel("Automatic Template Creation"),
-      mod_template_category_conf_ui("template_category_conf")
+      title = "Automatic Template Creation",
+      HTML("<h1>aut<span style='color: #A52A2A;'>O</span>matic templa<span style='color: #A52A2A;'>T</span>e <span style='color: #A52A2A;'>C</span>reation</h1>"),
+      ## Login
+      mod_login_ui("login_1")
     )
   )
 }
@@ -31,12 +35,12 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
-    bundle_resources(
-      path = app_sys("app/www"),
-      app_title = "auto.template.creation"
-    )
-    # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
-  )
+         favicon(),
+         bundle_resources(
+           path = app_sys("app/www"),
+           app_title = "auto.template.creation"
+         )
+                                        # Add here other external resources
+                                        # for example, you can add shinyalert::useShinyalert()
+       )
 }

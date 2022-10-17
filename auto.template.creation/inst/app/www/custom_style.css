@@ -1,0 +1,18 @@
+td div {
+    user-select: none;
+    padding: 8px 10px 8px 10px;
+    width: auto;
+    margin: -8px -10px -8px -10px;
+}
+
+.highlight {
+    color: #00aa00;
+}
+
+div.set_accnr_div_dt_holder td:last-child {
+    width: 100%;
+}
+
+div.set_accnr_div_dt_holder td {
+    min-width: 15%;
+}

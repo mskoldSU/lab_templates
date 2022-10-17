@@ -14,6 +14,17 @@ run_app <- function(
   uiPattern = "/",
   ...
 ) {
+  credentials <<- load_credentials()
+  if (is.null(credentials)) {
+    print("Could not find a credentials database, created a new user 'user-admin'")
+    credentials <<- data.frame(
+      username   =        c("user-admin"),
+      password   = sapply(c("user-admin"), sodium::password_store),
+      permission =        c("user-admin"),
+      stringsAsFactors = FALSE
+    )
+  }
+
   with_golem_options(
     app = shinyApp(
       ui = app_ui,
@@ -26,3 +37,4 @@ run_app <- function(
     golem_opts = list(...)
   )
 }
+

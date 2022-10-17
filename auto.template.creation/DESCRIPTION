@@ -2,15 +2,23 @@ Package: auto.template.creation
 Title: An Amazing Shiny App
 Version: 0.0.0.9000
 Authors@R: 
-    person("firstname", "lastname", , "your@email.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: What license is it under?
+    person("Elias", "Lundell", , "elilun03@email.com", role = c("aut", "cre"))
+Description: A Golem app for creating
+License: MIT
 Imports: 
     config (>= 0.3.1),
+    DBI,
     DT,
     golem (>= 0.3.2),
     magrittr,
-    shiny (>= 1.7.1)
+    readxl,
+    RSQLite,
+    shiny (>= 1.7.1),
+    shinyjs,
+    sodium,
+    stringr,
+    utils,
+    uuid
 Suggests: 
     covr,
     knitr,
