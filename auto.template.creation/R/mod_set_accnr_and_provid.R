@@ -166,6 +166,9 @@ mod_set_accnr_and_provid_server <- function(id, r) {
           cols <- r$order_spec_selected[r$order_spec_selected[, 1] == row, 2]
           art <- r$wide_merged[row, "art"]
           lokal <- r$wide_merged[row, "lokal"]
+          matrices <- r$selected_project_dfs$matrices |> 
+            dplyr::filter(stringr::str_detect(r$wide_merged[row, "art"], art)) |> 
+            dplyr::select(-art)
 
           long_matches <- lapply(cols, {
             function (col) {
@@ -187,29 +190,29 @@ mod_set_accnr_and_provid_server <- function(id, r) {
                   rep(colnames(r$wide_merged[col]), nrow(r$selected_project_dfs$samples[long_matches[[paste(col)]], ]))
                 }
               })),
-              ORGAN = unlist(lapply(cols, {
-                function (col) {
-                  rep({ function () {
-                    if (is.null(r$selected_project_dfs$matrices) || nrow(r$selected_project_dfs$matrices) == 0) {
-                      return("No Organ Table")
-                    }
-
-                    organ <- r$selected_project_dfs$matrices[
-                                                      r$selected_project_dfs$matrices$art == art &
-                                                      r$selected_project_dfs$matrices$analystyp == colnames(r$wide_merged[col]),
-                                                      "organ"]
-
-                    if (length(organ) == 0) {
-                      return("")
-                    } else if (length(organ) > 1) {
-                      showNotification(sprintf("Found multiple matching organs: %s.", paste(organ, collapse = ", ")), type = "message")
-                      return("Multiple")
-                    } else {
-                      return(organ)
-                    }
-                  }}(), nrow(r$selected_project_dfs$samples[long_matches[[paste(col)]], ]))
-                }
-              })),
+              # ORGAN = unlist(lapply(cols, {
+              #   function (col) {
+              #     rep({ function () {
+              #       if (is.null(r$selected_project_dfs$matrices) || nrow(r$selected_project_dfs$matrices) == 0) {
+              #         return("No Organ Table")
+              #       }
+              # 
+              #       organ <- r$selected_project_dfs$matrices[
+              #                                         r$selected_project_dfs$matrices$art == art &
+              #                                         r$selected_project_dfs$matrices$analystyp == colnames(r$wide_merged[col]),
+              #                                         "organ"]
+              # 
+              #       if (length(organ) == 0) {
+              #         return("")
+              #       } else if (length(organ) > 1) {
+              #         showNotification(sprintf("Found multiple matching organs: %s.", paste(organ, collapse = ", ")), type = "message")
+              #         return("Multiple")
+              #       } else {
+              #         return(organ)
+              #       }
+              #     }}(), nrow(r$selected_project_dfs$samples[long_matches[[paste(col)]], ]))
+              #   }
+              # })),
               COUNT = unlist(lapply(cols, {
                 function (col) {
                   r$selected_project_dfs$samples[long_matches[[paste(col)]], "individer_per_prov"]
@@ -231,32 +234,34 @@ mod_set_accnr_and_provid_server <- function(id, r) {
                   r$selected_project_dfs$samples[long_matches[[paste(col)]], "ind"]
                 }
               }))
-            )
+            ) |> dplyr::left_join(matrices, by = c("ANALYSTYP" = "analystyp")) |> 
+              dplyr::select(ANALYSTYP, ORGAN = organ, dplyr::everything()) |> 
+              dplyr::mutate(ACCNR = ifelse(valid_accnr(ACCNR), accnr_hom(ACCNR, COUNT), ACCNR))
           } else {
             coln <- c("", "Organ", "Count", "AccNR", "", "", "ProvID", "", "", "")
             df <- data.frame(
               ANALYSTYP = colnames(r$wide_merged[cols]),
-              ORGAN = unlist(lapply(cols, {
-                function (col) {
-                  if (is.null(r$selected_project_dfs$matrices) || nrow(r$selected_project_dfs$matrices) == 0) {
-                    return("No Organ Table")
-                  }
-
-                  organ <- r$selected_project_dfs$matrices[
-                                                    r$selected_project_dfs$matrices$art == art &
-                                                    r$selected_project_dfs$matrices$analystyp == colnames(r$wide_merged[col]),
-                                                    "organ"]
-
-                  if (length(organ) == 0) {
-                    return("")
-                  } else if (length(organ) > 1) {
-                    showNotification(sprintf("Found multiple matching organs: %s.", paste(organ, collapse = ", ")), type = "message")
-                    return("Multiple")
-                  } else {
-                    return(organ)
-                  }
-                }
-              })),
+              # ORGAN = unlist(lapply(cols, {
+              #   function (col) {
+              #     if (is.null(r$selected_project_dfs$matrices) || nrow(r$selected_project_dfs$matrices) == 0) {
+              #       return("No Organ Table")
+              #     }
+              # 
+              #     organ <- r$selected_project_dfs$matrices[
+              #                                       r$selected_project_dfs$matrices$art == art &
+              #                                       r$selected_project_dfs$matrices$analystyp == colnames(r$wide_merged[col]),
+              #                                       "organ"]
+              # 
+              #     if (length(organ) == 0) {
+              #       return("")
+              #     } else if (length(organ) > 1) {
+              #       showNotification(sprintf("Found multiple matching organs: %s.", paste(organ, collapse = ", ")), type = "message")
+              #       return("Multiple")
+              #     } else {
+              #       return(organ)
+              #     }
+              #   }
+              # })),
               COUNT = unlist(lapply(cols, {
                 function (col) {
                   r$wide_merged[row, col]
@@ -321,7 +326,8 @@ mod_set_accnr_and_provid_server <- function(id, r) {
                 }
               })),
               SPACER = rep(as.character(div(style="width=100%;")), length(cols))
-            )
+            ) |> dplyr::left_join(matrices, by = c("ANALYSTYP" = "analystyp")) |> 
+              dplyr::select(ANALYSTYP, ORGAN = organ, dplyr::everything())
           }
 
           rendered_table[[id]] <- df
@@ -331,6 +337,7 @@ mod_set_accnr_and_provid_server <- function(id, r) {
               dom = "t",
               paging = FALSE,
               ordering = FALSE,
+              autoWidth = TRUE,
               columnDefs = list(list(visible = FALSE, targets = c(0)))
             )
             edit <- FALSE
@@ -481,7 +488,8 @@ mod_set_accnr_and_provid_server <- function(id, r) {
       } else {
         ## NOTE (Elias): We only need to recalculate this once. We know the wide format doesn't need to change while viewer the set_accnr_and_provid view
         w <- long_to_wide_prover(r$selected_project_dfs$samples)
-        r$wide_merged <- merge_wide(w$wide, w$non_uniform)
+        r$wide_merged <- w$wide_merged # merge_wide(w$wide, w$non_uniform)
+        r$status <- w$status
       }
 
       updateDTs()
