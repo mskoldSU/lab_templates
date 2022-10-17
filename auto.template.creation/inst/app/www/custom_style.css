@@ -5,8 +5,13 @@ td div {
     margin: -8px -10px -8px -10px;
 }
 
-.highlight {
+.highlight1 {
     color: #00aa00;
+    font-weight: bold;
+}
+.highlight2 {
+    color: #f5dd42;
+    font-weight: bold;
 }
 
 div.set_accnr_div_dt_holder td:last-child {
